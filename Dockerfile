@@ -11,10 +11,7 @@ RUN pacman -Suy --noconfirm --needed base-devel
 # here is some garbage to work around the fact that makepkg's --asroot was removed by the stupid devs
 RUN pacman -Suy --noconfirm --needed sudo
 RUN sed -i 's/# %wheel ALL=(ALL) NOPASSWD: ALL/%wheel ALL=(ALL) NOPASSWD: ALL/g' /etc/sudoers
-RUN useradd aur-builder -G wheel,root
-USER aur-builder
+RUN useradd docker -G wheel,root
+USER docker
 RUN bash -c 'bash <(curl aur.sh) -si --noconfirm --asroot package-query yaourt'
 RUN yaourt -Suya
-USER 0
-
-# to install packages from the AUR using yaourt, you must switch to user "aur-builder" using docker's USER command
