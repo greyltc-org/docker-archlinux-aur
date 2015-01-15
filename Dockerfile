@@ -19,4 +19,4 @@ RUN yaourt -Suya
 USER 0
 WORKDIR /
 
-# you must switch to user "aur-builder" using docker's USER command to build & install packages from this point forward
+# to install packages from the AUR using yaourt, you must switch to user "aur-builder" using docker's USER command
