@@ -14,7 +14,7 @@ RUN sed -i 's/# %wheel ALL=(ALL) NOPASSWD: ALL/%wheel ALL=(ALL) NOPASSWD: ALL/g'
 RUN useradd docker -G wheel
 USER docker
 WORKDIR /tmp
-RUN bash -c 'bash <(curl aur.sh) -si --noconfirm --asroot package-query yaourt'
+RUN su -c "(bash <(curl aur.sh) -si --noconfirm package-query yaourt)" -s /bin/bash docker
 WORKDIR /
 RUN yaourt -Suya
 USER 0
