@@ -11,7 +11,7 @@ RUN pacman -Suy --noconfirm --needed base-devel
 # here is some garbage to work around the fact that makepkg's --asroot was removed by the stupid devs
 RUN pacman -Suy --noconfirm --needed sudo
 RUN sed -i 's/# %wheel ALL=(ALL) NOPASSWD: ALL/%wheel ALL=(ALL) NOPASSWD: ALL/g' /etc/sudoers
-RUN useradd docker -G wheel,root
+RUN useradd docker -G wheel
 USER docker
 WORKDIR /tmp
 RUN bash -c 'bash <(curl aur.sh) -si --noconfirm --asroot package-query yaourt'
