@@ -13,5 +13,10 @@ RUN pacman -Suy --noconfirm --needed sudo
 RUN sed -i 's/# %wheel ALL=(ALL) NOPASSWD: ALL/%wheel ALL=(ALL) NOPASSWD: ALL/g' /etc/sudoers
 RUN useradd docker -G wheel,root
 USER docker
+WORKDIR /tmp
 RUN bash -c 'bash <(curl aur.sh) -si --noconfirm --asroot package-query yaourt'
+WORKDIR /
 RUN yaourt -Suya
+USER 0
+
+# must switch to user "docker" to use yaourt going forward
