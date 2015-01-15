@@ -14,7 +14,7 @@ RUN sed -i 's/# %wheel ALL=(ALL) NOPASSWD: ALL/%wheel ALL=(ALL) NOPASSWD: ALL/g'
 RUN useradd aur-builder -G wheel,root
 USER aur-builder
 WORKDIR /tmp
-RUN bash <(curl aur.sh) -si --noconfirm package-query yaourt)
+RUN bash -c 'bash <(curl aur.sh) -si --noconfirm --asroot package-query yaourt'
 RUN yaourt -Suya
 USER 0
 WORKDIR /
