@@ -12,10 +12,10 @@ RUN pacman -Suy --noconfirm --needed base-devel
 RUN pacman -Suy --noconfirm --needed sudo
 RUN sed -i 's/# %wheel ALL=(ALL) NOPASSWD: ALL/%wheel ALL=(ALL) NOPASSWD: ALL/g' /etc/sudoers
 RUN useradd docker -G wheel
-USER docker
 WORKDIR /tmp
 RUN su -c "(bash <(curl aur.sh) -si --noconfirm package-query yaourt)" -s /bin/bash docker
 WORKDIR /
+USER docker
 RUN yaourt -Suya
 USER 0
 
