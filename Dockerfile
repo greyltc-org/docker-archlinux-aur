@@ -13,10 +13,8 @@ RUN pacman -Suy --noconfirm --needed sudo
 RUN sed -i 's/# %wheel ALL=(ALL) NOPASSWD: ALL/%wheel ALL=(ALL) NOPASSWD: ALL/g' /etc/sudoers
 RUN useradd aur-builder -G wheel,root
 USER aur-builder
-WORKDIR /tmp
 RUN bash -c 'bash <(curl aur.sh) -si --noconfirm --asroot package-query yaourt'
 RUN yaourt -Suya
 USER 0
-WORKDIR /
 
 # to install packages from the AUR using yaourt, you must switch to user "aur-builder" using docker's USER command
