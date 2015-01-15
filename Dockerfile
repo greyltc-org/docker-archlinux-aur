@@ -14,12 +14,12 @@ RUN sed -i 's/# %wheel ALL=(ALL) NOPASSWD: ALL/%wheel ALL=(ALL) NOPASSWD: ALL/g'
 
 # create docker user
 RUN useradd -m -G wheel docker
-USER docker
 WORKDIR /home/docker
 
 # install yaourt
 RUN su -c "(bash <(curl aur.sh) -si --noconfirm package-query yaourt)" -s /bin/bash docker
-RUN rm -rf /home/docker/*
+USER docker
+RUN sudo rm -rf /home/docker/*
 RUN yaourt -Suya
 
 # commands requiring root permissions should be prefixed with sudo
