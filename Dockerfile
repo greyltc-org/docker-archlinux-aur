@@ -8,15 +8,18 @@ RUN pacman -Suy --noconfirm
 # install development packages
 RUN pacman -Suy --noconfirm --needed base-devel
 
-# here is some garbage to work around the fact that makepkg's --asroot was removed by the stupid devs
-RUN pacman -Suy --noconfirm --needed sudo
+# here is some garbage to work around the fact that makepkg's --asroot was removed
+# no sudo password for users in wheel group
 RUN sed -i 's/# %wheel ALL=(ALL) NOPASSWD: ALL/%wheel ALL=(ALL) NOPASSWD: ALL/g' /etc/sudoers
-RUN useradd -m -G wheel docker
-WORKDIR /tmp
-RUN su -c "(bash <(curl aur.sh) -si --noconfirm package-query yaourt)" -s /bin/bash docker
-WORKDIR /
-USER docker
-RUN yaourt -Suya
-USER 0
 
-# must switch to user "docker" to use yaourt going forward
+# create docker user
+RUN useradd -m -G wheel docker
+USER docker
+WORKDIR /home/docker
+
+# install yaourt
+RUN su -c "(bash <(curl aur.sh) -si --noconfirm package-query yaourt)" -s /bin/bash docker
+RUN rm -rf /home/docker/*
+RUN yaourt -Suya
+
+# commands requiring root permissions should be prefixed with sudo
