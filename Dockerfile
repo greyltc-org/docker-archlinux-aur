@@ -22,4 +22,5 @@ USER docker
 RUN sudo rm -rf /home/docker/*
 RUN yaourt -Suya
 
-# commands requiring root permissions should be prefixed with sudo
+# the default user is now "docker" and so commands requiring root permissions
+# should be prefixed with sudo from now on
