@@ -1,6 +1,6 @@
 docker-archlinux-aur
 ====================
-Minimal Arch Linux docker image with base-devel group and yaourt installed  
+Minimal Arch Linux docker image with trustable, traceable & inspectable origin. Base-devel group, yaourt and packer installed for easy AUR access  
 
 The default user here is not root, rather it is a user called 'docker'. Commands requiring root permissions should be prefixed with 'sudo'.
 
