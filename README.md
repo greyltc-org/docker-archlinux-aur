@@ -6,9 +6,8 @@ The default user here is not root, rather it is a user called 'docker'. Commands
 
 ## Usage
 Get the trustable, AUTOMATED BUILD prebuilt image from [https://registry.hub.docker.com/u/l3iggs/archlinux-aur/](https://registry.hub.docker.com/u/l3iggs/archlinux-aur/):  
-```bash
-docker pull l3iggs/archlinux-aur
-```  
+`docker pull l3iggs/archlinux-aur`  
+
 or build it locally yourself from the source repository:  
 
 1. **Clone the Dockerfile repo**  
