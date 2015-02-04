@@ -5,7 +5,7 @@ Minimal Arch Linux docker image with base-devel group and yaourt installed
 The default user here is not root, rather it is a user called 'docker'. Commands requiring root permissions should be prefixed with 'sudo'.
 
 ## Usage
-Get the trustable, AUTOMATED BUILD prebuilt image from [https://registry.hub.docker.com/u/l3iggs/archlinux-aur/:](https://registry.hub.docker.com/u/l3iggs/archlinux-aur/)
+Get the trustable, AUTOMATED BUILD prebuilt image from [https://registry.hub.docker.com/u/l3iggs/archlinux-aur/:](https://registry.hub.docker.com/u/l3iggs/archlinux-aur/)  
 ```bash
 docker pull l3iggs/archlinux-aur
 ```  
