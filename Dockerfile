@@ -27,6 +27,6 @@ USER docker
 RUN sudo rm -rf /home/docker/*
 
 # install packer and update databases
-RUN yaourt -Suya --noconfirm --needed packer
+RUN yaourt -Syyua --noconfirm --needed packer
 
 
