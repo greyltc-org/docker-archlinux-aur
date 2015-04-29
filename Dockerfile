@@ -3,11 +3,8 @@
 FROM l3iggs/archlinux
 MAINTAINER l3iggs <l3iggs@live.com>
 
-# update pacman db
-RUN pacman -Suy --noconfirm
-
 # install development packages
-RUN pacman -Suy --noconfirm --needed base-devel
+RUN pacman -S --noconfirm --needed base-devel
 
 # no sudo password for users in wheel group
 RUN sed -i 's/# %wheel ALL=(ALL) NOPASSWD: ALL/%wheel ALL=(ALL) NOPASSWD: ALL/g' /etc/sudoers
