@@ -1,6 +1,6 @@
 # Arch Linux base docker container
 # with base-devel group and yaourt installed for aur access
-FROM l3iggs/archlinux
+FROM greyltc/archlinux
 MAINTAINER l3iggs <l3iggs@live.com>
 
 # install development packages
@@ -23,5 +23,5 @@ USER docker
 # clean up
 RUN sudo rm -rf /home/docker/*
 
-# install packer and update databases
-RUN yaourt -Syyua --noconfirm --needed packer
+# install cower and update databases
+RUN yaourt -Syyua --noconfirm --needed cower
