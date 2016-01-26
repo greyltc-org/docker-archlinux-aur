@@ -1,7 +1,7 @@
 # Arch Linux base docker container
 # with base-devel group and cower and yaourt for aur access
 FROM greyltc/archlinux
-MAINTAINER l3iggs <l3iggs@live.com>
+MAINTAINER Grey Christoforo <grey@christoforo.net>
 
 # install development packages
 RUN pacman -S --noconfirm --needed base-devel
