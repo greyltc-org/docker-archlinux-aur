@@ -17,7 +17,9 @@ USER docker
 WORKDIR /home/docker
 
 # install pacaur
-USER docker
 RUN gpg --keyserver pgp.mit.edu --recv-keys F56C0C53
 RUN bash <(curl aur.sh) -si --noconfirm cower pacaur
 RUN rm -rf cower pacaur
+
+# do AUR upgrade once
+RUN pacaur -Syyu --noedit --noconfirm
