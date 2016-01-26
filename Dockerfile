@@ -1,5 +1,5 @@
 # Arch Linux base docker container
-# with base-devel group and yaourt installed for aur access
+# with base-devel group and cower and yaourt for aur access
 FROM greyltc/archlinux
 MAINTAINER l3iggs <l3iggs@live.com>
 
@@ -13,15 +13,19 @@ RUN sed -i 's/# %wheel ALL=(ALL) NOPASSWD: ALL/%wheel ALL=(ALL) NOPASSWD: ALL/g'
 RUN useradd -m -G wheel docker
 WORKDIR /home/docker
 
-# install yaourt
-RUN su -c "(bash <(curl aur.sh) -si --noconfirm package-query yaourt)" -s /bin/bash docker
-
 # the default user is now "docker" and so commands requiring root permissions
 # should be prefixed with sudo from now on
 USER docker
 
-# clean up
-RUN sudo rm -rf /home/docker/*
+# install pacaur
+USER docker
+RUN gpg --keyserver pgp.mit.edu --recv-keys F56C0C53
+RUN bash <(curl aur.sh) -si --noconfirm cower pacaur
+RUN rm -rf cower pacaur
 
-# install cower and update databases
-RUN yaourt -Syyua --noconfirm --needed cower
+# install yaourt
+RUN pacaur -S --noedit --noconfirm yaourt
+
+# update (if needed)
+RUN yaourt -Syyua --noconfirm
+
