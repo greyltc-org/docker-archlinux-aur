@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # this script sets up unattended aur access via pacaur for a user given as the first argument
-set -o pipefail -v
+set -o pipefail -e
 
-[[ -z "$1" ]] && echo "You ust specify a user name" && exit 1
+[[ -z "$1" ]] && echo "You must specify a user name" && exit 1
 AUR_USER=$1
 
 # create the user
@@ -21,4 +21,3 @@ su $AUR_USER -c 'cd; rm -rf cower pacaur'
 
 # do a pacaur system update
 su $AUR_USER -c 'pacaur -Syyu --noedit --noconfirm'
-
