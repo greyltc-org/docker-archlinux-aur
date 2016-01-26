@@ -6,7 +6,5 @@ MAINTAINER Grey Christoforo <grey@christoforo.net>
 ADD add-aur.sh /usr/sbin/add-aur
 RUN add-aur docker
 
-# switch to that user
-USER docker
-WORKDIR /home/docker
-
+# now to install from the AUR, you can do this:
+# su docker -c "pacaur -S --noedit --noconfirm $PACKAGENAME"
