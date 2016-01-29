@@ -21,3 +21,6 @@ su $AUR_USER -c 'cd; rm -rf cower pacaur'
 
 # do a pacaur system update
 su $AUR_USER -c 'pacaur -Syyu --noedit --noconfirm'
+
+echo "This container is now set up for AUR access by using the following command:"
+echo "su $AUR_USER -c 'pacaur -Syyu --noedit --noconfirm PACKAGE'"
