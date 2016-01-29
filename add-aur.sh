@@ -12,6 +12,7 @@ useradd -m $AUR_USER
 su $AUR_USER -c 'gpg --refresh-keys'
 su $AUR_USER -c 'sed -i "s,#keyserver-options auto-key-retrieve,keyserver-options auto-key-retrieve,g" ~/.gnupg/gpg.conf'
 su $AUR_USER -c 'echo "keyserver hkp://pgp.mit.edu" >> ~/.gnupg/gpg.conf'
+su $AUR_USER -c 'gpg --refresh-keys'
 
 # install devel packages
 pacman -S --needed --noconfirm base-devel
