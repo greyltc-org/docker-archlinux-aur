@@ -8,9 +8,6 @@ AUR_USER=$1
 # create the user
 useradd -m $AUR_USER
 
-# setup gpg for this new user
-su $AUR_USER -c 'gpg --refresh-keys'
-
 # install devel packages
 pacman -S --needed --noconfirm base-devel
 
