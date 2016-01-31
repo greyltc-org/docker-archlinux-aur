@@ -8,6 +8,9 @@ AUR_USER=$1
 # create the user
 useradd -m $AUR_USER
 
+# set the user's password to blank
+echo "$AUR_USER:" | chpasswd -e
+
 # install devel packages
 pacman -S --needed --noprogressbar --noconfirm base-devel
 
