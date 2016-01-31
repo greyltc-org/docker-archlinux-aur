@@ -9,7 +9,7 @@ AUR_USER=$1
 useradd -m $AUR_USER
 
 # install devel packages
-pacman -S --needed --noconfirm base-devel
+pacman -S --needed --noprogressbar --noconfirm base-devel
 
 # give the aur user passwordless sudo powers
 echo "$AUR_USER      ALL = NOPASSWD: ALL" >> /etc/sudoers
@@ -21,11 +21,11 @@ sed -i 's,#MAKEFLAGS="-j2",MAKEFLAGS="-j$(nproc)",g' /etc/makepkg.conf
 sed -i "s,PKGEXT='.pkg.tar.xz',PKGEXT='.pkg.tar',g" /etc/makepkg.conf
 
 # install pacaur
-su $AUR_USER -c 'cd; bash <(curl aur.sh) -si --noconfirm cower pacaur'
+su $AUR_USER -c 'cd; bash <(curl aur.sh) -si --noconfirm --needed --noprogressbar cower pacaur'
 su $AUR_USER -c 'cd; rm -rf cower pacaur'
 
 # do a pacaur system update
-su $AUR_USER -c 'pacaur -Syyua --noedit --noconfirm'
+su $AUR_USER -c 'pacaur -Syyua --noprogressbar --noedit --noconfirm'
 
 echo "Packages from the AUR can now be installed like this:"
-echo "su $AUR_USER -c 'pacaur -S --noedit --noconfirm PACKAGE'"
+echo "su $AUR_USER -c 'pacaur -S --needed --noprogressbar --noedit --noconfirm PACKAGE'"
