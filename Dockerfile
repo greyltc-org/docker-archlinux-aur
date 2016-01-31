@@ -7,4 +7,4 @@ ADD add-aur.sh /usr/sbin/add-aur
 RUN add-aur docker
 
 # now to install from the AUR, you can do this:
-# su docker -c "pacaur -S --noedit --noconfirm $PACKAGENAME"
+# su docker -c "pacaur -S --noprogressbar --noedit --noconfirm $PACKAGENAME"
