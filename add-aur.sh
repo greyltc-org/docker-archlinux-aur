@@ -24,7 +24,7 @@ sed -i 's,#MAKEFLAGS="-j2",MAKEFLAGS="-j$(nproc)",g' /etc/makepkg.conf
 sed -i "s,PKGEXT='.pkg.tar.xz',PKGEXT='.pkg.tar',g" /etc/makepkg.conf
 
 # install pacaur
-su $AUR_USER -c 'cd; bash <(curl aur.sh) -si --noconfirm --needed --noprogressbar cower pacaur'
+su $AUR_USER -c 'cd; bash <(curl aur.sh) -si --noconfirm --needed cower pacaur'
 su $AUR_USER -c 'cd; rm -rf cower pacaur'
 
 # do a pacaur system update
