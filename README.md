@@ -1,3 +1,5 @@
+[![](https://images.microbadger.com/badges/image/greyltc/archlinux-aur.svg)](http://microbadger.com/images/greyltc/archlinux-aur) [![](https://images.microbadger.com/badges/version/greyltc/archlinux-aur.svg)](http://microbadger.com/images/greyltc/archlinux-aur)
+
 docker-archlinux-aur
 ====================
 This is exactly the same as https://github.com/greyltc/docker-archlinux with the following exception:
