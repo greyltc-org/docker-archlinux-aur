@@ -12,7 +12,7 @@ useradd -m $AUR_USER
 echo "${AUR_USER}:" | chpasswd -e
 
 # install devel packages
-pacman -S --needed --noprogressbar --noconfirm base-devel
+pacman -S --needed --noprogressbar --noconfirm base-devel vi
 
 # give the aur user passwordless sudo powers
 echo "$AUR_USER      ALL = NOPASSWD: ALL" >> /etc/sudoers
