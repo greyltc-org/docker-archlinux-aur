@@ -24,6 +24,7 @@ sed -i 's,#MAKEFLAGS="-j2",MAKEFLAGS="-j$(nproc)",g' /etc/makepkg.conf
 sed -i "s,PKGEXT='.pkg.tar.xz',PKGEXT='.pkg.tar',g" /etc/makepkg.conf
 
 # install pacaur
+su $AUR_USER -c 'gpg --recv-keys --keyserver hkp://pgp.mit.edu 1EB2638FF56C0C53'
 su $AUR_USER -c 'cd; bash <(curl aur.sh) -si --noconfirm --needed cower pacaur'
 su $AUR_USER -c 'cd; rm -rf cower pacaur'
 
