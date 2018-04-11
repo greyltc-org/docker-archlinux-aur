@@ -11,8 +11,9 @@ useradd -m $AUR_USER
 # set the user's password to blank
 echo "${AUR_USER}:" | chpasswd -e
 
-# install devel packages
-pacman -S --needed --noprogressbar --noconfirm base-devel vi
+# install devel packages (without systemd
+pkgs=$(pacman -S base-devel --print-format '%n ');pkgs=${pkgs//systemd/};pkgs=${pkgs//$'\n'/}
+pacman -S --needed --noprogressbar --noconfirm $pkgs vi
 
 # give the aur user passwordless sudo powers
 echo "$AUR_USER      ALL = NOPASSWD: ALL" >> /etc/sudoers
