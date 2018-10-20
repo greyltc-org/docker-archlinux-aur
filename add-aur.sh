@@ -5,13 +5,16 @@ set -o pipefail -e
 [[ -z "$1" ]] && echo "You must specify a user name" && exit 1
 AUR_USER=$1
 
+# install yay deps
+pacman -Syyu git sudo pacman go --needed
+
 # create the user
 useradd -m $AUR_USER
 
 # set the user's password to blank
 echo "${AUR_USER}:" | chpasswd -e
 
-# install devel packages (without systemd
+# install devel packages (without systemd)
 pkgs=$(pacman -S base-devel --print-format '%n ');pkgs=${pkgs//systemd/};pkgs=${pkgs//$'\n'/}
 pacman -S --needed --noprogressbar --noconfirm $pkgs vi
 
@@ -24,13 +27,16 @@ sed -i 's,#MAKEFLAGS="-j2",MAKEFLAGS="-j$(nproc)",g' /etc/makepkg.conf
 # don't compress the packages built here
 sed -i "s,PKGEXT='.pkg.tar.xz',PKGEXT='.pkg.tar',g" /etc/makepkg.conf
 
-# install pacaur
-su $AUR_USER -c 'gpg --recv-keys --keyserver hkp://pgp.mit.edu 1EB2638FF56C0C53'
-su $AUR_USER -c 'cd; bash <(curl aur.sh) -si --noconfirm --needed cower pacaur'
-su $AUR_USER -c 'cd; rm -rf cower pacaur'
+# install yay
+su $AUR_USER -c 'cd; git clone https://aur.archlinux.org/yay.git'
+su $AUR_USER -c 'cd; cd yay; makepkg'
+pushd /home/$AUR_USER/yay/
+pacman -U *.pkg.tar --noprogressbar --noconfirm
+popd
+rm -rf /home/$AUR_USER/yay
 
-# do a pacaur system update
-su $AUR_USER -c 'pacaur -Syyua --noprogressbar --noedit --noconfirm'
+# do a yay system update
+su $AUR_USER -c 'yay -Syyu --noprogressbar --noconfirm --noedit'
 
 echo "Packages from the AUR can now be installed like this:"
-echo "su $AUR_USER -c 'pacaur -S --needed --noprogressbar --noedit --noconfirm PACKAGE'"
+echo "su $AUR_USER -c 'yay -S --needed --noprogressbar --noedit --noconfirm PACKAGE'"
