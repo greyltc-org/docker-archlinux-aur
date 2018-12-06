@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-# this script sets up unattended aur access via pacaur for a user given as the first argument
+# this script sets up unattended aur access via yay for a user given as the first argument
 set -o pipefail -e
 
 [[ -z "$1" ]] && echo "You must specify a user name" && exit 1
 AUR_USER=$1
 
 # install yay deps
-pacman -Syyu git sudo pacman go --needed
+pacman -Syyu git sudo pacman go --needed --noprogressbar --noconfirm
 
 # create the user
 useradd -m $AUR_USER
