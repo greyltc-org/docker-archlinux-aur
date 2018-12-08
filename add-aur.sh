@@ -36,7 +36,7 @@ popd
 rm -rf /home/$AUR_USER/yay
 
 # do a yay system update
-su $AUR_USER -c 'yay -Syyu --noprogressbar --noconfirm --noedit'
+su $AUR_USER -c 'yay -Syyu --noprogressbar --noconfirm --needed'
 
 echo "Packages from the AUR can now be installed like this:"
-echo "su $AUR_USER -c 'yay -S --needed --noprogressbar --noedit --noconfirm PACKAGE'"
+echo "su $AUR_USER -c 'yay -S --needed --noprogressbar --needed --noconfirm PACKAGE'"
