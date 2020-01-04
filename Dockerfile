@@ -1,4 +1,4 @@
-# Arch Linux base docker container with pacaur for AUR access
+# Arch Linux base docker container with yay for AUR access
 FROM greyltc/archlinux
 MAINTAINER Grey Christoforo <grey@christoforo.net>
 
