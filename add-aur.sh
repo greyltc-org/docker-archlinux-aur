@@ -2,7 +2,12 @@
 # this script sets up unattended aur access via yay for a user given as the first argument
 set -o pipefail -e
 
-[[ -z "$1" ]] && echo "You must specify a user name" && exit 1
+if test -z "$1"
+then
+   echo "You must specify a user name"
+   exit -1
+fi
+
 AUR_USER=$1
 
 # install yay deps
