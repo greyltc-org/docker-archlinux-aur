@@ -26,7 +26,7 @@ jobs:
         name: Login to GitHub Container Registry
         uses: docker/login-action@v1 
         with:
-          registry: ghcr.io/greyltc/archlinux-aur/archlinux-aur:latest
+          registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.PACKAGE_TOKEN }}
       -
@@ -39,3 +39,4 @@ jobs:
           push: true
           tags: |
             greyltc/archlinux-aur:latest
+            ghcr.io/greyltc/archlinux-aur:latest
