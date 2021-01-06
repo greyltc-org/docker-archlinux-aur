@@ -2,14 +2,14 @@
 
 docker-archlinux-aur
 ====================
-This is exactly the same as https://github.com/greyltc/docker-archlinux with the following exception:
+Official Arch Linux Docker image with yay:
 
 Containers based on this one can use the following to install `PACKAGE` from the AUR:
 ```bash
-su docker -c 'yay -S --noprogressbar --needed --noconfirm PACKAGE'
+su aurbuilder -c 'yay -S --noprogressbar --needed --noconfirm PACKAGE'
 ```
 
 So in your Dockerfile, that would look like:
 ```dockerfile
-RUN su docker -c 'yay -S --noprogressbar --needed --noconfirm PACKAGE'
+RUN su aurbuilder -c 'yay -S --noprogressbar --needed --noconfirm PACKAGE'
 ```
