@@ -1,10 +1,10 @@
 # Arch Linux base docker container with yay for AUR access
-FROM greyltc/archlinux
-MAINTAINER Grey Christoforo <grey@christoforo.net>
+FROM archlinux:base-devel
+MAINTAINER Greyson Christoforo <grey@christoforo.net>
 
-# setup aur access for a new user "docker"
+# setup aur access for a new user "aurbuilder"
 ADD add-aur.sh /usr/sbin/add-aur
-RUN add-aur docker
+RUN add-aur aurbuilder
 
 # now to install from the AUR, you can do this:
-# su docker -c "yay -S --noprogressbar --needed --noconfirm $PACKAGENAME"
+# su aurbuilder -c "yay -S --noprogressbar --needed --noconfirm $PACKAGENAME"

@@ -19,10 +19,6 @@ useradd -m $AUR_USER
 # set the user's password to blank
 echo "${AUR_USER}:" | chpasswd -e
 
-# install devel packages (without systemd)
-pkgs=$(pacman -S base-devel --print-format '%n ');pkgs=${pkgs//systemd/};pkgs=${pkgs//$'\n'/}
-pacman -S --needed --noprogressbar --noconfirm $pkgs vi
-
 # give the aur user passwordless sudo powers
 echo "$AUR_USER      ALL = NOPASSWD: ALL" >> /etc/sudoers
 
@@ -40,8 +36,11 @@ pacman -U *.pkg.tar --noprogressbar --noconfirm
 popd
 rm -rf /home/$AUR_USER/yay
 
-# do a yay system update
+# chuck go
+pacman -Rs go --noconfirm
+
+# do a yay system update just to ensure yay is working
 su $AUR_USER -c 'yay -Syyu --noprogressbar --noconfirm --needed'
 
 echo "Packages from the AUR can now be installed like this:"
-echo "su $AUR_USER -c 'yay -S --needed --noprogressbar --needed --noconfirm PACKAGE'"
+echo "su $AUR_USER -c 'yay -S --needed --noprogressbar --noconfirm PACKAGE'"
