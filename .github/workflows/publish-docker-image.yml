@@ -4,24 +4,38 @@ on:
     - cron:  '0 2 ? * SUN'
   workflow_dispatch:
 jobs:
-  push_to_registries:
-    name: Push Docker image to multiple registries
+  multi-registries:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out the repo
+      -
+        name: Checkout
         uses: actions/checkout@v2
-      - name: Push to Docker Hub
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      -
+        name: Login to DockerHub
+        uses: docker/login-action@v1 
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      -
+        name: Login to GitHub Container Registry
+        uses: docker/login-action@v1 
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.CR_PAT }}
+      -
+        name: Build and push
         uses: docker/build-push-action@v2
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-          repository: greyltc/archlinux-aur
-          tag_with_ref: false
-      - name: Push to GitHub Packages
-        uses: docker/build-push-action@v2
-        with:
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-          registry: docker.pkg.github.com
-          repository: greyltc/docker-archlinux-aur/base
-          tag_with_ref: false
+          context: .
+          file: ./Dockerfile
+          platforms: linux/amd64
+          push: true
+          tags: |
+            greyltc/archlinux-aur:latest
