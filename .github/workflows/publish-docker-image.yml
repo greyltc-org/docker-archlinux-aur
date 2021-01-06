@@ -37,4 +37,6 @@ jobs:
           file: ./Dockerfile
           platforms: linux/amd64
           push: true
-          tags: greyltc/archlinux-aur:latest
+          tags: |
+            greyltc/archlinux-aur:latest
+            ghcr.io/greyltc/archlinux-aur:latest
