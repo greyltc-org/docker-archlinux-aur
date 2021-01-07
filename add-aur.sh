@@ -12,19 +12,19 @@ then
    exit -1
 fi
 
-AUR_USER=$1
+AUR_USER="${1}"
 
 # install yay deps
 pacman -Syyu git sudo pacman go --needed --noprogressbar --noconfirm
 
 # create the user
-useradd -m $AUR_USER
+useradd ${AUR_USER} --system --shell /usr/bin/nologin --create-home --home-dir "/var/${AUR_USER}"
 
-# set the user's password to blank
-echo "${AUR_USER}:" | chpasswd -e
+# lock out the ${AUR_USER}'s password
+passwd --lock ${AUR_USER}
 
-# give the aur user passwordless sudo powers
-echo "$AUR_USER      ALL = NOPASSWD: ALL" >> /etc/sudoers
+# give the aur user passwordless sudo powers for pacman
+echo "${AUR_USER} ALL=(ALL) NOPASSWD: /usr/bin/pacman" >> "/etc/sudoers.d/allow_${AUR_USER}_to_pacman"
 
 # use all possible cores for subsequent package builds
 sed -i 's,^#MAKEFLAGS=.*,MAKEFLAGS="-j$(nproc)",g' /etc/makepkg.conf
@@ -33,25 +33,25 @@ sed -i 's,^#MAKEFLAGS=.*,MAKEFLAGS="-j$(nproc)",g' /etc/makepkg.conf
 sed -i "s,^PKGEXT=.*,PKGEXT='.pkg.tar',g" /etc/makepkg.conf
 
 # install yay
-su $AUR_USER -c 'cd; git clone https://aur.archlinux.org/yay.git'
-su $AUR_USER -c 'cd; cd yay; makepkg'
-pushd /home/$AUR_USER/yay/
+sudo -u $AUR_USER -D~ bash -c "git clone https://aur.archlinux.org/yay.git"
+sudo -u $AUR_USER -D~/yay bash -c "makepkg"
+pushd /var/"${AUR_USER}"/yay
 pacman -U *.pkg.tar --noprogressbar --noconfirm
 popd
-rm -rf /home/$AUR_USER/yay
+sudo -u $AUR_USER -D~ bash -c "rm -rf yay"
 
 # this must be a bug in yay's PKGBUILD...
-rm -rf /home/$AUR_USER/.cache/go-build
+sudo -u $AUR_USER -D~ bash -c "rm -rf .cache/go-build"
 # go clean -cache  # alternative cache clean 
 
 # chuck go
 pacman -Rs go --noconfirm
 
 # do a yay system update just to ensure yay is working
-su $AUR_USER -c 'yay -Syyu --noprogressbar --noconfirm --needed'
+sudo -u $AUR_USER -D~ bash -c "yay -Syyu --noprogressbar --noconfirm --needed"
 
 # cache clean
-su $AUR_USER -c 'yes | yay -Scc'
+sudo -u $AUR_USER -D~ bash -c "yes | yay -Scc"
 
 echo "Packages from the AUR can now be installed like this:"
-echo "su $AUR_USER -c 'yay -S --needed --noprogressbar --noconfirm PACKAGE'"
+echo "sudo -u $AUR_USER -D~ bash -c 'yay -S --needed --noprogressbar --noconfirm PACKAGE'"
