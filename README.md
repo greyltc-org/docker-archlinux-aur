@@ -20,12 +20,12 @@ The Official Arch Linux Docker image after installing yay. yay is an [AUR helper
 
 Containers based on this one can use the following to install `PACKAGE` from the AUR:
 ```bash
-su aurbuilder -c 'yay -S --noprogressbar --removemake --needed --noconfirm PACKAGE'
+sudo -u aurbuilder -D~ bash -c 'yay -S --removemake --needed --noprogressbar --noconfirm PACKAGE'
 ```
 
-So in your Dockerfile, that would look like:
+So then in your Dockerfile, that would look like:
 ```dockerfile
-RUN su aurbuilder -c 'yay -S --noprogressbar --removemake --needed --noconfirm PACKAGE'
+RUN sudo -u aurbuilder -D~ bash -c 'yay -S --removemake --needed --noprogressbar --noconfirm PACKAGE'
 ```
 
 Poke around inside the container:
