@@ -36,6 +36,9 @@ pacman -U *.pkg.tar --noprogressbar --noconfirm
 popd
 rm -rf /home/$AUR_USER/yay
 
+# this must be a bug in yay's PKGBUILD...
+rm -rf /home/$AUR_USER/yay/go-build
+
 # chuck go
 pacman -Rs go --noconfirm
 
@@ -43,7 +46,7 @@ pacman -Rs go --noconfirm
 su $AUR_USER -c 'yay -Syyu --noprogressbar --noconfirm --needed'
 
 # cache clean
-su $AUR_USER -c 'yay -Sc --noconfirm'
+su $AUR_USER -c 'yes | yay -Scc'
 
 echo "Packages from the AUR can now be installed like this:"
 echo "su $AUR_USER -c 'yay -S --needed --noprogressbar --noconfirm PACKAGE'"
