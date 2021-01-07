@@ -4,8 +4,8 @@ MAINTAINER Greyson Christoforo <grey@christoforo.net>
 
 # install yay and add a user for it: aurbuilder
 ENV AUR_USER=aurbuilder
-ADD add-aur.sh /root/
+ADD add-aur.sh /root
 RUN bash /root/add-aur.sh ${AUR_USER}
 
 # now to install from the AUR, you can do this:
-# su ${AUR_USER} -c "yay -S --noprogressbar --needed --noconfirm package1 package2"
+#RUN sudo -u aurbuilder -D~ bash -c 'yay -Syu --removemake --needed --noprogressbar --noconfirm PACKAGE'
