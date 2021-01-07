@@ -37,7 +37,7 @@ sed -i "s,^PKGEXT=.*,PKGEXT='.pkg.tar',g" /etc/makepkg.conf
 
 # install yay
 sudo -u $AUR_USER -D~ bash -c "git clone https://aur.archlinux.org/yay.git"
-sudo -u $AUR_USER -D~/yay bash -c "makepkg"
+sudo -u $AUR_USER -D~//yay bash -c "makepkg"
 pushd /var/"${AUR_USER}"/yay
 pacman -U *.pkg.tar --noprogressbar --noconfirm
 popd
