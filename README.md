@@ -2,7 +2,7 @@
 
 docker-archlinux-aur
 ====================
-The Official Arch Linux Docker image after installing yay.
+The Official Arch Linux Docker image after installing yay. yay is an [AUR helper](https://wiki.archlinux.org/index.php/AUR_helpers) written in go.
 
 - Uses the official Arch base-devel image: `FROM archlinux:base-devel` ( https://hub.docker.com/_/archlinux )
 - Builds every week on Sunday, two hours after the official archlinux:base-devel package is built
