@@ -23,7 +23,7 @@ echo "${AUR_USER}:" | chpasswd -e
 echo "$AUR_USER      ALL = NOPASSWD: ALL" >> /etc/sudoers
 
 # use all possible cores for subsequent package builds
-sed -i 's,#MAKEFLAGS="-j2",MAKEFLAGS="-j$(nproc)",g' /etc/makepkg.conf
+sed -i 's,^#MAKEFLAGS=.*,MAKEFLAGS="-j$(nproc)",g' /etc/makepkg.conf
 
 # don't compress the packages built here
 sed -i "s,^PKGEXT=.*,PKGEXT='.pkg.tar',g" /etc/makepkg.conf
