@@ -27,3 +27,8 @@ So in your Dockerfile, that would look like:
 ```dockerfile
 RUN su aurbuilder -c 'yay -S --noprogressbar --removemake --needed --noconfirm PACKAGE'
 ```
+
+Poke around inside the container:
+```
+docker run -i -t greyltc/archlinux-aur bash
+```
