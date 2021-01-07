@@ -37,7 +37,7 @@ popd
 rm -rf /home/$AUR_USER/yay
 
 # this must be a bug in yay's PKGBUILD...
-rm -rf /home/$AUR_USER/yay/.cache/go-build
+rm -rf /home/$AUR_USER/.cache/go-build
 
 # chuck go
 pacman -Rs go --noconfirm
