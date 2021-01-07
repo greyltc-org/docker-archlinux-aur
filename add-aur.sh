@@ -38,6 +38,7 @@ rm -rf /home/$AUR_USER/yay
 
 # this must be a bug in yay's PKGBUILD...
 rm -rf /home/$AUR_USER/.cache/go-build
+# go clean -cache  # alternative cache clean 
 
 # chuck go
 pacman -Rs go --noconfirm
