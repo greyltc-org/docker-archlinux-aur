@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 # this script sets up unattended aur access via yay for a user given as the first argument
-set -o pipefail -e
+set -o pipefail
+set -o errexit
+set -o nounset
+set -o verbose
+set -o xtrace
 
 if test -z "$1"
 then
