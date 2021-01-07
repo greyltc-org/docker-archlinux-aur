@@ -30,5 +30,5 @@ RUN su aurbuilder -c 'yay -S --noprogressbar --removemake --needed --noconfirm P
 
 Poke around inside the container:
 ```
-docker run --pull=always -i -t greyltc/archlinux-aur bash
+docker run --name checkitout --pull=always --interactive --tty greyltc/archlinux-aur bash
 ```
