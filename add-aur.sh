@@ -42,5 +42,8 @@ pacman -Rs go --noconfirm
 # do a yay system update just to ensure yay is working
 su $AUR_USER -c 'yay -Syyu --noprogressbar --noconfirm --needed'
 
+# cache clean
+su $AUR_USER -c 'yay -Sc --noconfirm'
+
 echo "Packages from the AUR can now be installed like this:"
 echo "su $AUR_USER -c 'yay -S --needed --noprogressbar --noconfirm PACKAGE'"
