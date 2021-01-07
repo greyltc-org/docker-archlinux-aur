@@ -57,4 +57,4 @@ sudo -u $AUR_USER -D~ bash -c "yay -Syyu --noprogressbar --noconfirm --needed"
 sudo -u $AUR_USER -D~ bash -c "yes | yay -Scc"
 
 echo "Packages from the AUR can now be installed like this:"
-echo "sudo -u $AUR_USER -D~ bash -c 'yay -S --needed --noprogressbar --noconfirm PACKAGE'"
+echo "sudo -u $AUR_USER -D~ bash -c 'yay -Suy --needed --removemake --noprogressbar --noconfirm PACKAGE'"
