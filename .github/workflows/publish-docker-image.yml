@@ -39,6 +39,6 @@ jobs:
           push: true
           tags: |
             greyltc/archlinux-aur:latest
-            greyltc/archlinux-aur:"$(date +'%Y%m%d')".0.${GITHUB_RUN_NUMBER}
+            greyltc/archlinux-aur:$(date +'%Y%m%d').0.${{ github.run_number }}
             ghcr.io/greyltc/archlinux-aur:latest
-            ghcr.io/greyltc/archlinux-aur:"$(date +'%Y%m%d')".0.${GITHUB_RUN_NUMBER}
+            ghcr.io/greyltc/archlinux-aur:$(date +'%Y%m%d').0.${{ github.run_number }}
