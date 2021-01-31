@@ -30,10 +30,10 @@ echo "${AUR_USER} ALL=(ALL) NOPASSWD: /usr/bin/pacman" > "/etc/sudoers.d/allow_$
 echo "root ALL=(ALL) CWD=* ALL" > /etc/sudoers.d/permissive_root_Chdir_Spec
 
 # use all possible cores for subsequent package builds
-sed -i 's,^#MAKEFLAGS=.*,MAKEFLAGS="-j$(nproc)",g' /etc/makepkg.conf
+sed 's,^#MAKEFLAGS=.*,MAKEFLAGS="-j$(nproc)",g' -i /etc/makepkg.conf
 
 # don't compress the packages built here
-sed -i "s,^PKGEXT=.*,PKGEXT='.pkg.tar',g" /etc/makepkg.conf
+sed "s,^PKGEXT=.*,PKGEXT='.pkg.tar',g" -i /etc/makepkg.conf
 
 # install yay
 sudo -u $AUR_USER -D~ bash -c "git clone https://aur.archlinux.org/yay.git"
@@ -49,6 +49,10 @@ sudo -u $AUR_USER -D~ bash -c "rm -rf .cache/go-build"
 
 # chuck go
 pacman -Rs go --noconfirm
+
+# put built packages somewhere
+sed -i '/PKGDEST=/c\PKGDEST=/var/cache/makepkg/pkg' -i /etc/makepkg.conf
+sudo -u $AUR_USER -D~ bash -c "mkdir -p /var/cache/makepkg/pkg"
 
 # do a yay system update just to ensure yay is working
 sudo -u $AUR_USER -D~ bash -c "yay -Syyu --noprogressbar --noconfirm --needed"
