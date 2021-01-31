@@ -50,15 +50,15 @@ sudo -u $AUR_USER -D~ bash -c "rm -rf .cache/go-build"
 # chuck go
 pacman -Rs go --noconfirm
 
-# put built packages somewhere
-sed -i '/PKGDEST=/c\PKGDEST=/var/cache/makepkg/pkg' -i /etc/makepkg.conf
-sudo -u $AUR_USER -D~ bash -c "mkdir -p /var/cache/makepkg/pkg"
-
 # do a yay system update just to ensure yay is working
 sudo -u $AUR_USER -D~ bash -c "yay -Syyu --noprogressbar --noconfirm --needed"
 
 # cache clean
 sudo -u $AUR_USER -D~ bash -c "yes | yay -Scc"
+
+# put built packages somewhere
+sed -i '/PKGDEST=/c\PKGDEST=/var/cache/makepkg/pkg' -i /etc/makepkg.conf
+sudo -u $AUR_USER -D~ bash -c "mkdir -p /var/cache/makepkg/pkg"
 
 echo "Packages from the AUR can now be installed like this:"
 echo "sudo -u $AUR_USER -D~ bash -c 'yay -Suy --needed --removemake --noprogressbar --noconfirm PACKAGE'"
