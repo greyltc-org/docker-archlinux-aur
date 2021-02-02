@@ -8,8 +8,12 @@ set -o xtrace
 
 if test -z "$1"
 then
-   echo "You must specify a user name"
-   exit -1
+  1=ab
+fi
+
+if test -z "$2"
+then
+  2=yay
 fi
 
 AUR_USER="${1}"
