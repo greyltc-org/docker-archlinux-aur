@@ -5,7 +5,7 @@ LABEL source="https://github.com/greyltc/docker-archlinux-aur"
 
 # install yay and add a user for it: ab
 ADD add-aur.sh /root
-RUN bash /root/add-aur.sh "${AUR_USER:-ab}" "${HELPER:-yay}"
+RUN bash /root/add-aur.sh "${AUR_USER}" "${HELPER}"
 
 # now to install from the AUR, you might do something like this in your dockerfile:
 #RUN sudo -u ab -D~ bash -c 'yay -Syu --removemake --needed --noprogressbar --noconfirm PACKAGE'
