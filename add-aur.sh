@@ -68,6 +68,7 @@ mkdir -p /var/cache/makepkg
 install -o $AUR_USER -d /var/cache/makepkg/pkg
 
 if [ "$HELPER" == "yay" ] || [ "$HELPER" == "paru" ]
+then
   # do a helper system update just to ensure yay is working
   sudo -u $AUR_USER -D~ bash -c "${HELPER} -Syyu --noprogressbar --noconfirm --needed"
 
