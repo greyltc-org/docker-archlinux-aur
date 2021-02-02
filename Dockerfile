@@ -1,4 +1,4 @@
-# Arch Linux base docker container with yay/paru for AUR access
+# Arch Linux base docker container with yay for AUR access
 FROM archlinux:base-devel
 LABEL maintainer="Greyson Christoforo <grey@christoforo.net>"
 LABEL source="https://github.com/greyltc/docker-archlinux-aur"
