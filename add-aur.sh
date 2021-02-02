@@ -6,18 +6,8 @@ set -o nounset
 set -o verbose
 set -o xtrace
 
-if test -z "$1"
-then
-  1=ab
-fi
-
-if test -z "$2"
-then
-  2=yay
-fi
-
-AUR_USER="${1}"
-HELPER="${2}"
+AUR_USER="${1:-ab}"
+HELPER="${2:-yay}"
 
 # we're gonna need sudo and git
 pacman -Syyu git sudo --needed --noprogressbar --noconfirm
