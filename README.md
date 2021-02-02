@@ -10,9 +10,13 @@ The Official Arch Linux Docker image with an AUR helper. (containers for both ya
 - Report issues here: https://github.com/greyltc/docker-archlinux-aur/issues
 - Published on Docker Hub 
   - https://hub.docker.com/repository/docker/greyltc/archlinux-aur
+  - https://hub.docker.com/repository/docker/greyltc/archlinux-yay
+  - https://hub.docker.com/repository/docker/greyltc/archlinux-paru
 - Also published on the Github Container Registry
   - https://github.com/users/greyltc/packages/container/package/archlinux-aur
-- You can use it yourself by putting something like this at the top of your Dockerfile
+  - https://github.com/users/greyltc/packages/container/package/archlinux-yay
+  - https://github.com/users/greyltc/packages/container/package/archlinux-paru
+- You can use one yourself by putting something like this at the top of your Dockerfile
   - `FROM greyltc/archlinux-paru`, the latest version with paru helper
   - `FROM greyltc/archlinux-yay`, the latest version with yay helper
   - `FROM greyltc/archlinux-aur`, the latest version with yay helper
