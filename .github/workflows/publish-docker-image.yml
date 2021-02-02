@@ -11,30 +11,24 @@ jobs:
       - name: Get current date
         id: date
         run: echo "TODAY=$(date +'%Y%m%d')" >> $GITHUB_ENV
-      -
-        name: Checkout
+      - name: Checkout
         uses: actions/checkout@v2
-      -
-        name: Set up QEMU
+      - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
-      -
-        name: Set up Docker Buildx
+      - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
-      -
-        name: Login to DockerHub
+      - name: Login to DockerHub
         uses: docker/login-action@v1 
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      -
-        name: Login to GitHub Container Registry
+      - name: Login to GitHub Container Registry
         uses: docker/login-action@v1 
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.PACKAGE_TOKEN }}
-      -
-        name: Build yay container
+      - name: Build paru container
         uses: docker/build-push-action@v2
         with:
           context: .
@@ -42,8 +36,23 @@ jobs:
           platforms: linux/amd64
           push: true
           build-args: |
-            HELPER=yay
-            AUR_USER=ab
+            -e=HELPER=paru
+            -e=AUR_USER=ab
+          tags: |
+            greyltc/archlinux-paru:latest
+            greyltc/archlinux-paru:${{ env.TODAY }}.0.${{ github.run_number }}
+            ghcr.io/greyltc/archlinux-paru:latest
+            ghcr.io/greyltc/archlinux-paru:${{ env.TODAY }}.0.${{ github.run_number }}
+      - name: Build yay container
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./Dockerfile
+          platforms: linux/amd64
+          push: true
+          build-args: |
+            -e=HELPER=yay
+            -e=AUR_USER=ab
           tags: |
             greyltc/archlinux-aur:latest
             greyltc/archlinux-aur:${{ env.TODAY }}.0.${{ github.run_number }}
@@ -53,19 +62,4 @@ jobs:
             greyltc/archlinux-yay:${{ env.TODAY }}.0.${{ github.run_number }}
             ghcr.io/greyltc/archlinux-yay:latest
             ghcr.io/greyltc/archlinux-yay:${{ env.TODAY }}.0.${{ github.run_number }}
-      -
-        name: Build paru container
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          file: ./Dockerfile
-          platforms: linux/amd64
-          push: true
-          build-args: |
-            HELPER=paru
-            AUR_USER=ab
-          tags: |
-            greyltc/archlinux-paru:latest
-            greyltc/archlinux-paru:${{ env.TODAY }}.0.${{ github.run_number }}
-            ghcr.io/greyltc/archlinux-paru:latest
-            ghcr.io/greyltc/archlinux-paru:${{ env.TODAY }}.0.${{ github.run_number }}
+
