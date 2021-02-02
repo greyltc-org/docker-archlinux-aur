@@ -3,6 +3,9 @@ FROM archlinux:base-devel
 LABEL maintainer="Greyson Christoforo <grey@christoforo.net>"
 LABEL source="https://github.com/greyltc/docker-archlinux-aur"
 
+ARG AUR_USER
+ARG HELPER
+
 # install yay and add a user for it: ab
 ADD add-aur.sh /root
 RUN bash /root/add-aur.sh "${AUR_USER}" "${HELPER}"
