@@ -5,7 +5,7 @@ LABEL source="https://github.com/greyltc/docker-archlinux-aur"
 
 # install yay and add a user for it: aurbuilder
 ENV AUR_USER=aurbuilder
-ENV HELPER=yay
+ENV HELPER=paru
 ADD add-aur.sh /root
 RUN bash /root/add-aur.sh "${AUR_USER}" "${HELPER}"
 
