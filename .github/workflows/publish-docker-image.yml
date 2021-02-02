@@ -1,10 +1,10 @@
-name: Publish Docker image
+name: Publish docker images
 on:
   schedule:
     - cron:  '0 2 ? * SUN'
   workflow_dispatch:
 jobs:
-  multi-registries:
+  Build aur containers:
     runs-on: ubuntu-latest
     steps:
       - name: Get current date
@@ -33,15 +33,38 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.PACKAGE_TOKEN }}
       -
-        name: Build and push
+        name: Build yay container
         uses: docker/build-push-action@v2
         with:
           context: .
           file: ./Dockerfile
           platforms: linux/amd64
           push: true
+          build-args: |
+            HELPER=yay
+            AUR_USER=aurbuilder
           tags: |
             greyltc/archlinux-aur:latest
             greyltc/archlinux-aur:${{ env.TODAY }}.0.${{ github.run_number }}
             ghcr.io/greyltc/archlinux-aur:latest
             ghcr.io/greyltc/archlinux-aur:${{ env.TODAY }}.0.${{ github.run_number }}
+            greyltc/archlinux-yay:latest
+            greyltc/archlinux-yay:${{ env.TODAY }}.0.${{ github.run_number }}
+            ghcr.io/greyltc/archlinux-yay:latest
+            ghcr.io/greyltc/archlinux-yay:${{ env.TODAY }}.0.${{ github.run_number }}
+      -
+        name: Build paru container
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./Dockerfile
+          platforms: linux/amd64
+          push: true
+          build-args: |
+            HELPER=paru
+            AUR_USER=aurbuilder
+          tags: |
+            greyltc/archlinux-paru:latest
+            greyltc/archlinux-paru:${{ env.TODAY }}.0.${{ github.run_number }}
+            ghcr.io/greyltc/archlinux-paru:latest
+            ghcr.io/greyltc/archlinux-paru:${{ env.TODAY }}.0.${{ github.run_number }}
