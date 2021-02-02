@@ -13,9 +13,10 @@ then
 fi
 
 AUR_USER="${1}"
+HELPER="${2}"
 
-# install yay deps
-pacman -Syyu git sudo pacman go --needed --noprogressbar --noconfirm
+# we're gonna need sudo and git
+pacman -Syyu git sudo --needed --noprogressbar --noconfirm
 
 # create the user
 useradd ${AUR_USER} --system --shell /usr/bin/nologin --create-home --home-dir "/var/${AUR_USER}"
@@ -35,31 +36,43 @@ sed 's,^#MAKEFLAGS=.*,MAKEFLAGS="-j$(nproc)",g' -i /etc/makepkg.conf
 # don't compress the packages built here
 sed "s,^PKGEXT=.*,PKGEXT='.pkg.tar',g" -i /etc/makepkg.conf
 
-# install yay
-sudo -u $AUR_USER -D~ bash -c "git clone https://aur.archlinux.org/yay.git"
-sudo -u $AUR_USER -D~//yay bash -c "makepkg"
-pushd /var/"${AUR_USER}"/yay
+# get helper pkgbuild
+sudo -u $AUR_USER -D~ bash -c "git clone https://aur.archlinux.org/${HELPER}.git"
+
+# get helper deps
+makedeps=( $(source "/var/${AUR_USER}/${HELPER}/PKGBUILD" && printf '%s ' "${makedepends[@]}") )
+deps=( $(source "/var/${AUR_USER}/${HELPER}/PKGBUILD" && printf '%s ' "${depends[@]}") )
+
+# install deps (they must all be non-aur)
+pacman -Syyu $makedeps $deps sudo --needed --noprogressbar --noconfirm
+
+# make helper
+sudo -u $AUR_USER -D~//${HELPER} bash -c "makepkg"
+
+# install helper
+pushd /var/"${AUR_USER}"/${HELPER}
 pacman -U *.pkg.tar --noprogressbar --noconfirm
 popd
-sudo -u $AUR_USER -D~ bash -c "rm -rf yay"
+sudo -u $AUR_USER -D~ bash -c "rm -rf ${HELPER}"
 
 # this must be a bug in yay's PKGBUILD...
 sudo -u $AUR_USER -D~ bash -c "rm -rf .cache/go-build"
 # go clean -cache  # alternative cache clean 
 
-# chuck go
-pacman -Rs go --noconfirm
-
-# do a yay system update just to ensure yay is working
-sudo -u $AUR_USER -D~ bash -c "yay -Syyu --noprogressbar --noconfirm --needed"
-
-# cache clean
-sudo -u $AUR_USER -D~ bash -c "yes | yay -Scc"
+# chuck makedeps
+pacman -Rs $makedeps --noconfirm
 
 # put built packages somewhere
 sed -i '/PKGDEST=/c\PKGDEST=/var/cache/makepkg/pkg' -i /etc/makepkg.conf
 mkdir -p /var/cache/makepkg
 install -o $AUR_USER -d /var/cache/makepkg/pkg
 
-echo "Packages from the AUR can now be installed like this:"
-echo "sudo -u $AUR_USER -D~ bash -c 'yay -Suy --needed --removemake --noprogressbar --noconfirm PACKAGE'"
+if [ "$HELPER" == "yay" ] || [ "$HELPER" == "paru" ]
+  # do a helper system update just to ensure yay is working
+  sudo -u $AUR_USER -D~ bash -c "${HELPER} -Syyu --noprogressbar --noconfirm --needed"
+
+  # cache clean
+  sudo -u $AUR_USER -D~ bash -c "yes | ${HELPER} -Scc"
+  
+  echo "Packages from the AUR can now be installed like this:"
+  echo "sudo -u ${AUR_USER} -D~ bash -c '${HELPER} -Suy --needed --removemake --noprogressbar --noconfirm PACKAGE'"
