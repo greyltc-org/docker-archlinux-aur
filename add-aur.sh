@@ -44,7 +44,8 @@ makedeps=( $(source "/var/${AUR_USER}/${HELPER}/PKGBUILD" && printf '%s ' "${mak
 deps=( $(source "/var/${AUR_USER}/${HELPER}/PKGBUILD" && printf '%s ' "${depends[@]}") )
 
 # install deps (they must all be non-aur)
-pacman -Syyu $makedeps $deps sudo --needed --noprogressbar --noconfirm
+pacman -Syyu $deps --needed --noprogressbar --noconfirm
+pacman -Syyu $makedeps --needed --noprogressbar --noconfirm --asdeps
 
 # make helper
 sudo -u $AUR_USER -D~//${HELPER} bash -c "makepkg"
@@ -60,7 +61,7 @@ sudo -u $AUR_USER -D~ bash -c "rm -rf .cache/go-build"
 # go clean -cache  # alternative cache clean 
 
 # chuck makedeps
-pacman -Rs $makedeps --noconfirm
+pacman -Qtdq | pacman -Rns - --noconfirm
 
 # put built packages somewhere
 sed -i '/PKGDEST=/c\PKGDEST=/var/cache/makepkg/pkg' -i /etc/makepkg.conf
