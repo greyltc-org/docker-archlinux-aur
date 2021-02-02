@@ -43,7 +43,7 @@ jobs:
           push: true
           build-args: |
             HELPER=yay
-            AUR_USER=aurbuilder
+            AUR_USER=ab
           tags: |
             greyltc/archlinux-aur:latest
             greyltc/archlinux-aur:${{ env.TODAY }}.0.${{ github.run_number }}
@@ -63,7 +63,7 @@ jobs:
           push: true
           build-args: |
             HELPER=paru
-            AUR_USER=aurbuilder
+            AUR_USER=ab
           tags: |
             greyltc/archlinux-paru:latest
             greyltc/archlinux-paru:${{ env.TODAY }}.0.${{ github.run_number }}
