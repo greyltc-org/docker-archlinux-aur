@@ -31,6 +31,7 @@ jobs:
       - name: Build paru container
         uses: docker/build-push-action@v2
         with:
+          no-cache: true
           context: .
           file: ./Dockerfile
           platforms: linux/amd64
@@ -46,6 +47,7 @@ jobs:
       - name: Build yay container
         uses: docker/build-push-action@v2
         with:
+          no-cache: true
           context: .
           file: ./Dockerfile
           platforms: linux/amd64
