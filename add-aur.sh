@@ -76,3 +76,4 @@ if [ "$HELPER" == "yay" ] || [ "$HELPER" == "paru" ]
   
   echo "Packages from the AUR can now be installed like this:"
   echo "sudo -u ${AUR_USER} -D~ bash -c '${HELPER} -Suy --needed --removemake --noprogressbar --noconfirm PACKAGE'"
+fi
