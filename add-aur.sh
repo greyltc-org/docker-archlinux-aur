@@ -31,9 +31,7 @@ sed 's,^#MAKEFLAGS=.*,MAKEFLAGS="-j$(nproc)",g' -i /etc/makepkg.conf
 sed "s,^PKGEXT=.*,PKGEXT='.pkg.tar',g" -i /etc/makepkg.conf
 
 # get helper pkgbuild
-sudo -u "${AUR_USER}" -D~ bash -c "curl -L -O https://aur.archlinux.org/cgit/aur.git/snapshot/${HELPER}.tar.gz"
-sudo -u "${AUR_USER}" -D~ bash -c "bsdtar -xvf ${HELPER}.tar.gz"
-sudo -u "${AUR_USER}" -D~ bash -c "rm ${HELPER}.tar.gz"
+sudo -u "${AUR_USER}" -D~ bash -c "curl -L -O https://aur.archlinux.org/cgit/aur.git/snapshot/${HELPER}.tar.gz | bsdtar -xvf -"
 
 # make helper
 sudo -u "${AUR_USER}" -D~//${HELPER} bash -c "makepkg -s --noprogressbar --noconfirm --needed"
@@ -42,8 +40,9 @@ sudo -u "${AUR_USER}" -D~//${HELPER} bash -c "makepkg -s --noprogressbar --nocon
 pacman -U "/var/${AUR_USER}/${HELPER}"/*.pkg.tar --noprogressbar --noconfirm
 rm -rf "/var/${AUR_USER}/${HELPER}"
 
-# this must be a bug in yay's PKGBUILD...
+# _not_ a fan of a makepkg build leaving garbage in ${HOME}
 rm -rf "/var/${AUR_USER}/.cache/go-build"
+rm -rf "/var/${AUR_USER}/.cargo"
 
 # chuck deps
 pacman -Qtdq | pacman -Rns - --noconfirm
