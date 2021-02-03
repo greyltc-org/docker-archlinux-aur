@@ -35,23 +35,15 @@ sudo -u "${AUR_USER}" -D~ bash -c "curl -L -O https://aur.archlinux.org/cgit/aur
 sudo -u "${AUR_USER}" -D~ bash -c "bsdtar -xvf ${HELPER}.tar.gz"
 sudo -u "${AUR_USER}" -D~ bash -c "rm ${HELPER}.tar.gz"
 
-# get helper deps
-#HELPER_MAKEDEPS=( $(source "/var/${AUR_USER}/${HELPER}/PKGBUILD" && printf '%s ' "${makedepends[@]}") )
-#HELPER_DEPS=( $(source "/var/${AUR_USER}/${HELPER}/PKGBUILD" && printf '%s ' "${depends[@]}") )
-
-# install deps (they must all be non-aur)
-#pacman -S ${HELPER_DEPS} ${HELPER_MAKEDEPS} --needed --noprogressbar --noconfirm --asdeps
-
 # make helper
 sudo -u "${AUR_USER}" -D~//${HELPER} bash -c "makepkg -s --noprogressbar --noconfirm --needed"
 
 # install helper
-pacman -U "/var/"${AUR_USER}/${HELPER}"/*.pkg.tar --noprogressbar --noconfirm
-rm -rf "/var/"${AUR_USER}/${HELPER}"
+pacman -U "/var/${AUR_USER}/${HELPER}"/*.pkg.tar --noprogressbar --noconfirm
+rm -rf "/var/${AUR_USER}/${HELPER}"
 
 # this must be a bug in yay's PKGBUILD...
-rm -rf "/var/"${AUR_USER}"/.cache/go-build
-# sudo -u "${AUR_USER}" -D~ bash -c "go clean -cache" # alternative cache clean
+rm -rf "/var/${AUR_USER}/.cache/go-build"
 
 # chuck deps
 pacman -Qtdq | pacman -Rns - --noconfirm
