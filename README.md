@@ -4,32 +4,35 @@ docker-archlinux-aur
 ====================
 The Official Arch Linux Docker image after installing an AUR helper. (containers for both yay and paru)
 
-- Uses the official Arch base-devel image: `FROM archlinux:base-devel` ( https://hub.docker.com/_/archlinux )
+- Uses the official Arch base-devel image, `FROM archlinux:base-devel` ( see https://hub.docker.com/_/archlinux )
 - Builds every week on Sunday, two hours after the official archlinux:base-devel package is built
 - Uses the same tag syntax as that container
 - Report issues here: https://github.com/greyltc/docker-archlinux-aur/issues
-- Published on Docker Hub 
+- Automated builds done and published on Docker Hub 
   - https://hub.docker.com/repository/docker/greyltc/archlinux-aur
-  - https://hub.docker.com/repository/docker/greyltc/archlinux-yay
-  - https://hub.docker.com/repository/docker/greyltc/archlinux-paru
-- Also published on the Github Container Registry
+- Github actions builds also done and published on the Github Container Registry
   - https://github.com/users/greyltc/packages/container/package/archlinux-aur
-  - https://github.com/users/greyltc/packages/container/package/archlinux-yay
-  - https://github.com/users/greyltc/packages/container/package/archlinux-paru
+- There are a few tags here
+  - `latest`, `20210203.0.54`, `yay`, `yay-20210203.0.54` builds with yay helper
+  - `paru`, `paru-20210203.0.54` builds with paru helper
 - You can use one yourself by putting something like this at the top of your Dockerfile
-  - `FROM greyltc/archlinux-paru`, the latest version with paru helper
-  - `FROM greyltc/archlinux-yay`, the latest version with yay helper
-  - `FROM greyltc/archlinux-aur`, the latest version with yay helper
-  - `FROM greyltc/archlinux-aur:20210107.0.13`, a specific version
-  - `FROM ghcr.io/greyltc/archlinux-aur`, the latest version from the Github Container Registry
-  - `FROM ghcr.io/greyltc/archlinux-aur:20210107.0.13`, a specific version from the Github Container Registry
+  - `FROM greyltc/archlinux-aur`
+  - `FROM greyltc/archlinux-aur:paru`
+  - `FROM greyltc/archlinux-aur:yay`
+  - `FROM greyltc/archlinux-aur:paru-20210203.0.54`
+  - `FROM greyltc/archlinux-aur:yay-20210203.0.54`
+  - `FROM ghcr.io/greyltc/archlinux-aur`
+  - `FROM ghcr.io/greyltc/archlinux-aur:paru`
+  - `FROM ghcr.io/greyltc/archlinux-aur:yay`
+  - `FROM ghcr.io/greyltc/archlinux-aur:paru-20210203.0.54`
+  - `FROM ghcr.io/greyltc/archlinux-aur:yay-20210203.0.54`
 
-Containers based on this one can use the following to install `PACKAGE` from the AUR:
+Containers based on this one can do something like this to install `PACKAGE` from the AUR:
 ```bash
 sudo -u ab -D~ bash -c 'yay -Syu --removemake --needed --noprogressbar --noconfirm PACKAGE'
 ```
 
-So then in your Dockerfile, that would look like:
+So then in your Dockerfile, that would look something like:
 ```dockerfile
 RUN sudo -u ab -D~ bash -c 'yay -Syu --removemake --needed --noprogressbar --noconfirm PACKAGE'
 ```
