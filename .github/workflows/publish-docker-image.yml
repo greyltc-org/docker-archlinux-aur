@@ -40,8 +40,8 @@ jobs:
             HELPER=paru
             AUR_USER=ab
           tags: |
-            ghcr.io/greyltc/archlinux-paru:latest
-            ghcr.io/greyltc/archlinux-paru:${{ env.TODAY }}.0.${{ github.run_number }}
+            ghcr.io/greyltc/archlinux-aur:paru
+            ghcr.io/greyltc/archlinux-aur:paru-${{ env.TODAY }}.0.${{ github.run_number }}
 #            greyltc/archlinux-paru:latest
 #            greyltc/archlinux-paru:${{ env.TODAY }}.0.${{ github.run_number }}
       - name: Build yay container
@@ -58,8 +58,8 @@ jobs:
           tags: |
             ghcr.io/greyltc/archlinux-aur:latest
             ghcr.io/greyltc/archlinux-aur:${{ env.TODAY }}.0.${{ github.run_number }}
-            ghcr.io/greyltc/archlinux-yay:latest
-            ghcr.io/greyltc/archlinux-yay:${{ env.TODAY }}.0.${{ github.run_number }}
+            ghcr.io/greyltc/archlinux-aur:yay
+            ghcr.io/greyltc/archlinux-aur:yay-${{ env.TODAY }}.0.${{ github.run_number }}
 #            greyltc/archlinux-aur:latest
 #            greyltc/archlinux-aur:${{ env.TODAY }}.0.${{ github.run_number }}
 #            greyltc/archlinux-yay:latest
