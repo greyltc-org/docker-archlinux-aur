@@ -31,7 +31,7 @@ sed 's,^#MAKEFLAGS=.*,MAKEFLAGS="-j$(nproc)",g' -i /etc/makepkg.conf
 sed "s,^PKGEXT=.*,PKGEXT='.pkg.tar',g" -i /etc/makepkg.conf
 
 # get helper pkgbuild
-sudo -u "${AUR_USER}" -D~ bash -c "curl -L https://aur.archlinux.org/cgit/aur.git/snapshot/${HELPER}.tar.gz"
+sudo -u "${AUR_USER}" -D~ bash -c "curl -L -O https://aur.archlinux.org/cgit/aur.git/snapshot/${HELPER}.tar.gz"
 sudo -u "${AUR_USER}" -D~ bash -c "bsdtar -xvf ${HELPER}.tar.gz"
 sudo -u "${AUR_USER}" -D~ bash -c "rm ${HELPER}.tar.gz"
 
