@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# this script sets up unattended aur access via yay for a user given as the first argument
+# this script takes two arguments and sets up unattended AUR access for user ${1} via a helper, ${2}
 set -o pipefail
 set -o errexit
 set -o nounset
@@ -38,8 +38,7 @@ makedeps=( $(source "/var/${AUR_USER}/${HELPER}/PKGBUILD" && printf '%s ' "${mak
 deps=( $(source "/var/${AUR_USER}/${HELPER}/PKGBUILD" && printf '%s ' "${depends[@]}") )
 
 # install deps (they must all be non-aur)
-pacman -Syyu $deps --needed --noprogressbar --noconfirm
-pacman -Syyu $makedeps --needed --noprogressbar --noconfirm --asdeps
+pacman -Syyu $deps $makedeps --needed --noprogressbar --noconfirm --asdeps
 
 # make helper
 sudo -u $AUR_USER -D~//${HELPER} bash -c "makepkg"
@@ -52,12 +51,12 @@ sudo -u $AUR_USER -D~ bash -c "rm -rf ${HELPER}"
 
 # this must be a bug in yay's PKGBUILD...
 sudo -u $AUR_USER -D~ bash -c "rm -rf .cache/go-build"
-# go clean -cache  # alternative cache clean 
+# go clean -cache  # alternative cache clean
 
-# chuck makedeps
+# chuck deps
 pacman -Qtdq | pacman -Rns - --noconfirm
 
-# put built packages somewhere
+# setup storage for AUR packages built in the future
 sed -i '/PKGDEST=/c\PKGDEST=/var/cache/makepkg/pkg' -i /etc/makepkg.conf
 mkdir -p /var/cache/makepkg
 install -o $AUR_USER -d /var/cache/makepkg/pkg
