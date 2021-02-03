@@ -36,24 +36,22 @@ sudo -u "${AUR_USER}" -D~ bash -c "bsdtar -xvf ${HELPER}.tar.gz"
 sudo -u "${AUR_USER}" -D~ bash -c "rm ${HELPER}.tar.gz"
 
 # get helper deps
-HELPER_MAKEDEPS=( $(source "/var/${AUR_USER}/${HELPER}/PKGBUILD" && printf '%s ' "${makedepends[@]}") )
-HELPER_DEPS=( $(source "/var/${AUR_USER}/${HELPER}/PKGBUILD" && printf '%s ' "${depends[@]}") )
+#HELPER_MAKEDEPS=( $(source "/var/${AUR_USER}/${HELPER}/PKGBUILD" && printf '%s ' "${makedepends[@]}") )
+#HELPER_DEPS=( $(source "/var/${AUR_USER}/${HELPER}/PKGBUILD" && printf '%s ' "${depends[@]}") )
 
 # install deps (they must all be non-aur)
-pacman -S ${HELPER_DEPS} ${HELPER_MAKEDEPS} --needed --noprogressbar --noconfirm --asdeps
+#pacman -S ${HELPER_DEPS} ${HELPER_MAKEDEPS} --needed --noprogressbar --noconfirm --asdeps
 
 # make helper
-sudo -u "${AUR_USER}" -D~//${HELPER} bash -c "makepkg"
+sudo -u "${AUR_USER}" -D~//${HELPER} bash -c "makepkg -s"
 
 # install helper
-pushd /var/"${AUR_USER}/${HELPER}"
-pacman -U *.pkg.tar --noprogressbar --noconfirm
-popd
-sudo -u "${AUR_USER}" -D~ bash -c "rm -rf ${HELPER}"
+pacman -U "/var/"${AUR_USER}/${HELPER}"/*.pkg.tar --noprogressbar --noconfirm
+rm -rf "/var/"${AUR_USER}/${HELPER}"
 
 # this must be a bug in yay's PKGBUILD...
-sudo -u "${AUR_USER}" -D~ bash -c "rm -rf .cache/go-build"
-# go clean -cache  # alternative cache clean
+rm -rf "/var/"${AUR_USER}"/.cache/go-build
+# sudo -u "${AUR_USER}" -D~ bash -c "go clean -cache" # alternative cache clean
 
 # chuck deps
 pacman -Qtdq | pacman -Rns - --noconfirm
@@ -72,5 +70,5 @@ then
   sudo -u "${AUR_USER}" -D~ bash -c "yes | ${HELPER} -Scc"
   
   echo "Packages from the AUR can now be installed like this:"
-  echo "sudo -u ${AUR_USER} -D~ bash -c '${HELPER} -Suy --needed --removemake --noprogressbar --noconfirm PACKAGE'"
+  echo "sudo -u ${AUR_USER} -D~ bash -c '${HELPER} -Syu --needed --removemake --noprogressbar --noconfirm PACKAGE'"
 fi
