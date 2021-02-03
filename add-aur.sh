@@ -6,6 +6,9 @@ set -o nounset
 set -o verbose
 set -o xtrace
 
+# debugging
+printenv
+
 AUR_USER="${1:-ab}"
 HELPER="${2:-yay}"
 
