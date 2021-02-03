@@ -2,7 +2,7 @@
 
 docker-archlinux-aur
 ====================
-The Official Arch Linux Docker image with an AUR helper. (containers for both yay and paru)
+The Official Arch Linux Docker image after installing an AUR helper. (containers for both yay and paru)
 
 - Uses the official Arch base-devel image: `FROM archlinux:base-devel` ( https://hub.docker.com/_/archlinux )
 - Builds every week on Sunday, two hours after the official archlinux:base-devel package is built
