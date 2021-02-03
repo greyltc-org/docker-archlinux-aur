@@ -43,7 +43,7 @@ sudo -u "${AUR_USER}" -D~ bash -c "rm ${HELPER}.tar.gz"
 #pacman -S ${HELPER_DEPS} ${HELPER_MAKEDEPS} --needed --noprogressbar --noconfirm --asdeps
 
 # make helper
-sudo -u "${AUR_USER}" -D~//${HELPER} bash -c "makepkg -s"
+sudo -u "${AUR_USER}" -D~//${HELPER} bash -c "makepkg -s --noprogressbar --noconfirm --needed"
 
 # install helper
 pacman -U "/var/"${AUR_USER}/${HELPER}"/*.pkg.tar --noprogressbar --noconfirm
