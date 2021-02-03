@@ -1,4 +1,4 @@
-name: Publish docker images
+name: Tag commit and build containers
 on:
   schedule:
     - cron:  '0 2 ? * SUN'
@@ -11,8 +11,22 @@ jobs:
       - name: Get current date
         id: date
         run: echo "TODAY=$(date +'%Y%m%d')" >> $GITHUB_ENV
+      - name: Generate version string
+        id: versionstring
+        run: echo "THIS_TAG=${{ env.TODAY }}.0.${{ github.run_number }}" >> $GITHUB_ENV
       - name: Checkout
         uses: actions/checkout@v2
+      - name: Create tag
+        uses: actions/github-script@v3
+        with:
+          github-token: ${{ github.token }}
+          script: |
+            github.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: "refs/tags/{{ env.THIS_TAG }}",
+              sha: context.sha
+            })
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
       - name: Set up Docker Buildx
@@ -41,7 +55,7 @@ jobs:
             AUR_USER=ab
           tags: |
             ghcr.io/greyltc/archlinux-aur:paru
-            ghcr.io/greyltc/archlinux-aur:paru-${{ env.TODAY }}.0.${{ github.run_number }}
+            ghcr.io/greyltc/archlinux-aur:paru-${{ env.THIS_TAG }}
 #            greyltc/archlinux-paru:latest
 #            greyltc/archlinux-paru:${{ env.TODAY }}.0.${{ github.run_number }}
       - name: Build yay container
@@ -57,9 +71,9 @@ jobs:
             AUR_USER=ab
           tags: |
             ghcr.io/greyltc/archlinux-aur:latest
-            ghcr.io/greyltc/archlinux-aur:${{ env.TODAY }}.0.${{ github.run_number }}
+            ghcr.io/greyltc/archlinux-aur:${{ env.THIS_TAG }}
             ghcr.io/greyltc/archlinux-aur:yay
-            ghcr.io/greyltc/archlinux-aur:yay-${{ env.TODAY }}.0.${{ github.run_number }}
+            ghcr.io/greyltc/archlinux-aur:yay-${{ env.THIS_TAG }}
 #            greyltc/archlinux-aur:latest
 #            greyltc/archlinux-aur:${{ env.TODAY }}.0.${{ github.run_number }}
 #            greyltc/archlinux-yay:latest
