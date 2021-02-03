@@ -24,7 +24,7 @@ jobs:
             github.git.createRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              ref: "refs/tags/${process.env.THIS_TAG}",
+              ref: `refs/tags/${process.env.THIS_TAG}`,
               sha: context.sha
             })
       - name: Set up QEMU
