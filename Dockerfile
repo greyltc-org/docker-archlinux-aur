@@ -2,6 +2,7 @@
 FROM archlinux:base-devel
 LABEL maintainer="Greyson Christoforo <grey@christoforo.net>"
 LABEL source="https://github.com/greyltc/docker-archlinux-aur"
+LABEL org.opencontainers.image.source https://github.com/greyltc-org/docker-archlinux-aur
 
 ARG AUR_USER
 ARG HELPER
