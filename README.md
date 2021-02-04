@@ -1,6 +1,4 @@
-[![](https://images.microbadger.com/badges/image/greyltc/archlinux-aur.svg)](http://microbadger.com/images/greyltc/archlinux-aur) [![](https://images.microbadger.com/badges/version/greyltc/archlinux-aur.svg)](https://hub.docker.com/r/greyltc/archlinux-aur/)
-
-docker-archlinux-aur
+archlinux-aur
 ====================
 The Official Arch Linux Docker image after installing an AUR helper. (containers for both yay and paru)
 
