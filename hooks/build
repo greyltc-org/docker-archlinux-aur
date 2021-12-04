@@ -1,15 +1,15 @@
 #!/bin/bash
 
-# build with the default yay helper
-docker build --build-arg AUR_USER=ab --build-arg HELPER=yay -f $DOCKERFILE_PATH \
+# build with the default paru helper
+docker build --build-arg AUR_USER=ab --build-arg HELPER=paru -f $DOCKERFILE_PATH \
   -t "${DOCKER_REPO}:latest" \
-  -t "${DOCKER_REPO}:yay" \
+  -t "${DOCKER_REPO}:paru" \
   -t "${DOCKER_REPO}:${DOCKER_TAG}" \
-  -t "${DOCKER_REPO}:yay-${DOCKER_TAG}" \
+  -t "${DOCKER_REPO}:paru-${DOCKER_TAG}" \
   .
 
-# build with the paru helper
-docker build --build-arg AUR_USER=ab --build-arg HELPER=paru -f $DOCKERFILE_PATH \
-  -t "${DOCKER_REPO}:paru" \
-  -t "${DOCKER_REPO}:paru-${DOCKER_TAG}" \
+# build with the yay helper
+docker build --build-arg AUR_USER=ab --build-arg HELPER=yay -f $DOCKERFILE_PATH \
+  -t "${DOCKER_REPO}:yay" \
+  -t "${DOCKER_REPO}:yay-${DOCKER_TAG}" \
   .
