@@ -89,4 +89,4 @@ jobs:
             ghcr.io/greyltc/archlinux-aur:yay
             ghcr.io/greyltc/archlinux-aur:yay-${{ env.THIS_TAG }}
             greyltc/archlinux-aur:yay
-            greyltc/archlinux-aur:paru-${{ env.TODAY }}.0.${{ github.run_number }}
+            greyltc/archlinux-aur:yay-${{ env.TODAY }}.0.${{ github.run_number }}
