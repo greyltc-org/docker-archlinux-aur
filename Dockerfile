@@ -16,5 +16,5 @@ RUN bash /root/add-aur.sh "${AUR_USER}" "${HELPER}"
 
 # now to install from the AUR, you might do something like this in your dockerfile:
 #RUN sudo -u ab -D~ bash -c 'paru -Syu --needed --noprogressbar --noconfirm PACKAGE; yes|paru -Scc'
-or for yay
+# or for yay
 #RUN sudo -u ab -D~ bash -c 'yay -Syu --removemake --needed --noprogressbar --noconfirm PACKAGE'
