@@ -62,10 +62,6 @@ jobs:
             HELPER=paru
             AUR_USER=ab
           tags: |
-            ghcr.io/greyltc/archlinux-aur:paru
-            ghcr.io/greyltc/archlinux-aur:paru-${{ env.THIS_TAG }}
-            ghcr.io/greyltc/archlinux-aur:latest
-            ghcr.io/greyltc/archlinux-aur:${{ env.THIS_TAG }}
             ghcr.io/greyltc-org/archlinux-aur:latest
             ghcr.io/greyltc-org/archlinux-aur:${{ env.THIS_TAG }}
             ghcr.io/greyltc-org/archlinux-aur:paru
@@ -89,7 +85,5 @@ jobs:
           tags: |
             ghcr.io/greyltc-org/archlinux-aur:yay
             ghcr.io/greyltc-org/archlinux-aur:yay-${{ env.THIS_TAG }}
-            ghcr.io/greyltc/archlinux-aur:yay
-            ghcr.io/greyltc/archlinux-aur:yay-${{ env.THIS_TAG }}
             greyltc/archlinux-aur:yay
             greyltc/archlinux-aur:yay-${{ env.TODAY }}.0.${{ github.run_number }}
