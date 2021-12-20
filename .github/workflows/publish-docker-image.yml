@@ -7,6 +7,9 @@ jobs:
   build:
     name: Build AUR enabled Arch containers
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
     steps:
       - name: Get current date
         id: date
