@@ -87,3 +87,13 @@ jobs:
             ghcr.io/greyltc-org/archlinux-aur:yay-${{ env.THIS_TAG }}
             greyltc/archlinux-aur:yay
             greyltc/archlinux-aur:yay-${{ env.TODAY }}.0.${{ github.run_number }}
+      -
+        name: Trigger rebuild for direct descendants
+        run: |
+          curl --silent \
+          --url https://api.github.com/repos/greyltc-org/docker-platformio/dispatches" \
+          --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
+          --header "Accept: application/vnd.github.v3+json" \
+          --data '{"event_type":"parent-change"}' \
+          --output trigger_resp.json
+          cat trigger_resp.json | jq --raw-output '.'
