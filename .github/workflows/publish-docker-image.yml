@@ -73,9 +73,7 @@ jobs:
       -
         name: Build yay container
         uses: docker/build-push-action@v2
-        with:You will receive your USAT membership number when your membership card arrives in the mail. This will take approximately 2-3 weeks. For all race applications that you fill out prior to receiving your membership number, write 'pending' in the USAT # field.
-
-
+        with:
           no-cache: true
           context: .
           file: ./Dockerfile
