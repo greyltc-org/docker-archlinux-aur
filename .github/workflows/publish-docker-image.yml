@@ -92,7 +92,7 @@ jobs:
         run: |
           curl --silent \
           --url "https://api.github.com/repos/greyltc-org/docker-platformio/dispatches" \
-          --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
+          --header 'authorization: Bearer ${{ secrets.ORG_ROBOT_PAT }}' \
           --header "Accept: application/vnd.github.v3+json" \
           --data '{"event_type":"parent-change"}' \
           --output trigger_resp.json
