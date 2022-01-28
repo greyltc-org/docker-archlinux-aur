@@ -67,7 +67,7 @@ then
   else
     sudo -u "${AUR_USER}" -D~ bash -c "yes | ${HELPER} -Scc"
   fi
-  yes | pacman -Scc
+  yes | pacman -Scc || echo "Nothing to remove"
 
   echo "Packages from the AUR can now be installed like this:"
   echo "aur-install package-number-one package-number-two" 
@@ -95,6 +95,6 @@ then
 else
   sudo -u ${AUR_USER} -D~ bash -c '${HELPER} -Syu  --needed --noprogressbar --noconfirm "\$@"' true "\$@"
 fi
-yes | pacman -Scc >/dev/null 2>&1
+yes | pacman -Scc >/dev/null 2>&1 
 EOF
 chmod +x /bin/aur-install-dirty
