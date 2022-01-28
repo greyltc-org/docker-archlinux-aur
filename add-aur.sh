@@ -64,11 +64,18 @@ then
   sudo -u "${AUR_USER}" -D~ bash -c "yes | ${HELPER} -Scc"
   
   echo "Packages from the AUR can now be installed like this:"
-  echo "sudo -u ${AUR_USER} -D~ bash -c '${HELPER} -Syu --needed --removemake --noprogressbar --noconfirm PACKAGE'"
+  echo "aur-install package-number-one package-number-two" 
 fi
 
-tee /bin/aur-install <<EOF
+cat /bin/aur-install <<EOF
 #!/bin/sh
-sudo -u ${AUR_USER} -D~ bash -c '${HELPER} -Syu --needed --noprogressbar --noconfirm "\$@"; yes|${HELPER} -Scc' "\$@"
+sudo -u ${AUR_USER} -D~ bash -c '${HELPER} -Syu --needed --noprogressbar --noconfirm "\$@"; yes|${HELPER} -Scc >/dev/null 2>&1' "\$@"
 EOF
 chmod +x /bin/aur-install
+
+# same as aur-install helper above, but with no cleanup
+cat /bin/aur-install-dirty <<EOF
+#!/bin/sh
+sudo -u ${AUR_USER} -D~ bash -c '${HELPER} -Syu --needed --noprogressbar --noconfirm "\$@"' "\$@"
+EOF
+chmod +x /bin/aur-install-dirty
