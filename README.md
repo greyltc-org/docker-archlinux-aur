@@ -28,9 +28,9 @@ The Official Arch Linux Docker image after installing an AUR helper. (containers
     - `FROM ghcr.io/greyltc-org/archlinux-aur:paru-20210203.0.54`
     - `FROM ghcr.io/greyltc-org/archlinux-aur:yay-20210203.0.54`
 
-In containers based on the paru-based image flavor, you could put something like the following in your Dockerfile:
+To install stuff in a container based on this project you can put something like the following in your Dockerfile:
 ```dockerfile
-RUN sudo -u ab -D~ bash -c 'paru -Syu --removemake --needed --noprogressbar --noconfirm PACKAGE'
+RUN aur-install aur-package1 aur-package2 non-aur-package3
 ```
 
 Do this to poke around inside the container if you'd like:
