@@ -63,7 +63,8 @@ then
   # cache clean
   sudo -u "${AUR_USER}" -D~ bash -c "yes | ${HELPER} -Sc --delete"
   
-  if test "${HELPER}" == paru then
+  if test "${HELPER}" == paru
+  then
     yes | paru -cc
   fi
   
