@@ -69,13 +69,13 @@ fi
 
 tee /bin/aur-install <<EOF
 #!/bin/sh
-sudo -u ${AUR_USER} -D~ bash -c '${HELPER} -Syu --needed --noprogressbar --noconfirm "\$@"; yes|${HELPER} -Scc >/dev/null 2>&1' "\$@"
+sudo -u ${AUR_USER} -D~ bash -c '${HELPER} -Syu --needed --noprogressbar --noconfirm "\$@"; yes|${HELPER} -Scc >/dev/null 2>&1' true "\$@"
 EOF
 chmod +x /bin/aur-install
 
 # same as aur-install helper above, but with no cleanup
 tee /bin/aur-install-dirty <<EOF
 #!/bin/sh
-sudo -u ${AUR_USER} -D~ bash -c '${HELPER} -Syu --needed --noprogressbar --noconfirm "\$@"' "\$@"
+sudo -u ${AUR_USER} -D~ bash -c '${HELPER} -Syu --needed --noprogressbar --noconfirm "\$@"' true "\$@"
 EOF
 chmod +x /bin/aur-install-dirty
