@@ -63,10 +63,11 @@ then
   # cache clean
   if test "${HELPER}" == paru
   then
-    sudo -u "${AUR_USER}" -D~ bash -c "yes | paru -Sc --delete; yes | paru -cc; yes | pacman -Scc"
+    sudo -u "${AUR_USER}" -D~ bash -c "yes | paru -Sc --delete; yes | paru -cc"
   else
-    sudo -u "${AUR_USER}" -D~ bash -c "yes | ${HELPER} -Scc; yes | pacman -Scc"
+    sudo -u "${AUR_USER}" -D~ bash -c "yes | ${HELPER} -Scc"
   fi
+  yes | pacman -Scc
 
   echo "Packages from the AUR can now be installed like this:"
   echo "aur-install package-number-one package-number-two" 
@@ -76,10 +77,11 @@ tee /bin/aur-install <<EOF
 #!/bin/sh
 if test "${HELPER}" == paru
 then
-  sudo -u ${AUR_USER} -D~ bash -c 'paru -Syu --removemake --needed --noprogressbar --noconfirm "\$@"; yes|paru -Sc --delete>/dev/null 2>&1; yes | paru -cc>/dev/null 2>&1;  yes | pacman -Scc>/dev/null 2>&1' true "\$@"
+  sudo -u ${AUR_USER} -D~ bash -c 'paru -Syu --removemake --needed --noprogressbar --noconfirm "\$@"; yes|paru -Sc --delete>/dev/null 2>&1; yes | paru -cc>/dev/null 2>&1' true "\$@"
 else
-  sudo -u ${AUR_USER} -D~ bash -c '${HELPER} -Syu --needed --noprogressbar --noconfirm "\$@"; yes|${HELPER} -Scc>/dev/null 2>&1' true "\$@"
+  sudo -u ${AUR_USER} -D~ bash -c '${HELPER} -Syu --needed --noprogressbar --noconfirm "\$@"' true "\$@"
 fi
+yes | pacman -Scc >/dev/null 2>&1
 EOF
 chmod +x /bin/aur-install
 
@@ -91,7 +93,8 @@ then
   sudo -u ${AUR_USER} -D~ bash -c 'paru -Syu  --removemake --needed --noprogressbar --noconfirm "\$@"; yes | paru -cc >/dev/null 2>&1; yes | pacman -Scc>/dev/null 2>&1' true "\$@"
   yes | paru -cc >/dev/null 2>&1
 else
-  sudo -u ${AUR_USER} -D~ bash -c '${HELPER} -Syu  --needed --noprogressbar --noconfirm "\$@"; yes | pacman -Scc' true "\$@"
+  sudo -u ${AUR_USER} -D~ bash -c '${HELPER} -Syu  --needed --noprogressbar --noconfirm "\$@"' true "\$@"
 fi
+yes | pacman -Scc >/dev/null 2>&1
 EOF
 chmod +x /bin/aur-install-dirty
