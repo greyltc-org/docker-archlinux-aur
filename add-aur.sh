@@ -48,7 +48,7 @@ rm -rf "/var/${AUR_USER}/.cache/go-build"
 rm -rf "/var/${AUR_USER}/.cargo"
 
 # chuck deps
-pacman -Qtdq | pacman -Rns - --noconfirm
+pacman -Rns --noconfirm $(pacman -Qtdq) || echo "Nothing to remove"
 
 # setup storage for AUR packages built in the future
 sed -i '/PKGDEST=/c\PKGDEST=/var/cache/makepkg/pkg' -i /etc/makepkg.conf
