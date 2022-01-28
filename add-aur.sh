@@ -69,6 +69,6 @@ fi
 
 tee /bin/aur-install <<EOF
 #!/bin/sh
-sudo -u ${AUR_USER} -D~ bash -c '${HELPER} -Syu --needed --noprogressbar --noconfirm "\$@"; yes|${HELPER} -Scc'
+sudo -u ${AUR_USER} -D~ bash -c '${HELPER} -Syu --needed --noprogressbar --noconfirm "\$@"; yes|${HELPER} -Scc' "\$@"
 EOF
 chmod +x /bin/aur-install
