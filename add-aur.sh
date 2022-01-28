@@ -66,3 +66,9 @@ then
   echo "Packages from the AUR can now be installed like this:"
   echo "sudo -u ${AUR_USER} -D~ bash -c '${HELPER} -Syu --needed --removemake --noprogressbar --noconfirm PACKAGE'"
 fi
+
+tee /bin/aur-install <<EOF
+#!/bin/sh
+sudo -u ${AUR_USER} -D~ bash -c "${HELPER} -Syu --needed --noprogressbar --noconfirm \"\$@\"; yes|${HELPER} -Scc"
+EOF
+chmod +x /bin/aur-install
