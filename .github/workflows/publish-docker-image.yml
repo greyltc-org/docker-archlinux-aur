@@ -93,16 +93,16 @@ jobs:
           TO_TRIGGER="docker-platformio
           docker-otherthing
           "
-          while read -r repos
+          while read -r repo
           do
-            printf "Triggering $repo build ...\n"
+            printf "Triggering ${repo} build ...\n"
             curl --silent \
-            --url "https://api.github.com/repos/greyltc-org/$repo/dispatches" \
+            --url "https://api.github.com/repos/greyltc-org/${repo}/dispatches" \
             --header 'authorization: Bearer ${{ secrets.ROBOT_REPO_PAT }}' \
             --header "Accept: application/vnd.github.v3+json" \
             --data '{"event_type":"parent-change"}' \
             --output trigger_resp.json
             cat trigger_resp.json | jq --raw-output '.'
           done <<EOF
-          $TO_TRIGGER
+          ${TO_TRIGGER}
           EOF
