@@ -12,16 +12,13 @@ printenv
 AUR_USER="${1:-ab}"
 HELPER="${2:-yay}"
 
-# we're gonna need sudo to build as the AUR user we're about to set up
-pacman -S sudo reflector --needed --noprogressbar --noconfirm
-
 # update mirrorlist
 curl --silent --location https://raw.githubusercontent.com/greyltc/docker-archlinux/master/get-new-mirrors.sh > /sbin/get-new-mirrors
 chmod +x /sbin/get-new-mirrors
 get-new-mirrors
 
 # we're gonna need sudo to build as the AUR user we're about to set up
-pacman -S sudo reflector --needed --noprogressbar --noconfirm
+pacman -S sudo --needed --noprogressbar --noconfirm
 
 # create the user
 useradd "${AUR_USER}" --system --shell /usr/bin/nologin --create-home --home-dir "/var/${AUR_USER}"
