@@ -12,8 +12,11 @@ printenv
 AUR_USER="${1:-ab}"
 HELPER="${2:-yay}"
 
+# update mirrorlist
+reflector --latest 20 --protocol https --sort rate --save /etc/pacman.d/mirrorlist
+
 # we're gonna need sudo to build as the AUR user we're about to set up
-pacman -Syu sudo --needed --noprogressbar --noconfirm
+pacman -S sudo --needed --noprogressbar --noconfirm
 
 # create the user
 useradd "${AUR_USER}" --system --shell /usr/bin/nologin --create-home --home-dir "/var/${AUR_USER}"
@@ -58,7 +61,7 @@ install -o "${AUR_USER}" -d /var/cache/makepkg/pkg
 if [ "${HELPER}" == "yay" ] || [ "${HELPER}" == "paru" ]
 then
   # do a helper system update just to ensure the helper is working
-  sudo -u "${AUR_USER}" -D~ bash -c "${HELPER} -Syu --noprogressbar --noconfirm --needed"
+  sudo -u "${AUR_USER}" -D~ bash -c "${HELPER} -S --noprogressbar --noconfirm --needed ${HELPER}"
 
   # cache clean
   if test "${HELPER}" == paru
