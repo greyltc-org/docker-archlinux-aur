@@ -1,3 +1,4 @@
+[![Tag commit and build containers](https://github.com/greyltc-org/docker-archlinux-aur/actions/workflows/publish-docker-image.yml/badge.svg)](https://github.com/greyltc-org/docker-archlinux-aur/actions/workflows/publish-docker-image.yml)  
 archlinux-aur
 ====================
 The Official Arch Linux Docker image after installing an AUR helper. (containers for both yay and paru)
