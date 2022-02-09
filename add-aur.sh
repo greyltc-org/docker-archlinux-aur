@@ -68,7 +68,7 @@ if test ! -z "\$@"
 then
   if test "${HELPER}" == paru
   then
-    sudo -u ${AUR_USER} -D~ bash -c 'paru -S --removemake --needed --noprogressbar --noconfirm "\$@"; yes' true "\$@"
+    sudo -u ${AUR_USER} -D~ bash -c 'paru -S --removemake --needed --noprogressbar --noconfirm "\$@"' true "\$@"
     if test ! -z \${PKG_OUT+x}
     then
       sudo mkdir -p "\${PKG_OUT}"
@@ -88,7 +88,7 @@ then
 else
   sudo -u "${AUR_USER}" -D~ bash -c "yes | ${HELPER} -Scc >/dev/null 2>&1"
 fi
-sudo bash -c 'yes | pacman -Scc >/dev/null 2>&1 || :'
+sudo yes | pacman -Scc >/dev/null 2>&1 || :
 EOF
 chmod +x /bin/aur-install
 
