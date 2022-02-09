@@ -1,4 +1,4 @@
-name: Tag commit and build containers
+name: Make helper containers
 on:
   schedule:
     - cron:  '0 2 ? * SUN'
