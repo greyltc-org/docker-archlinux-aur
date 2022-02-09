@@ -57,7 +57,7 @@ pacman -Rns --noconfirm $(pacman -Qtdq) || echo "Nothing to remove"
 
 # setup storage for AUR packages built
 _pkgdest="/home/custompkgs"
-mkdir -p "\$(dirname \"${_pkgdest}\")"
+mkdir -p "$(dirname \"${_pkgdest}\")"
 install -o "${AUR_USER}" -d "${_pkgdest}"
 sudo -u ${AUR_USER} -D~ bash -c "mkdir -p .config/pacman"
 sudo -u ${AUR_USER} -D~ bash -c "echo \"PKGDEST=${_pkgdest}\" > .config/pacman/makepkg.conf"
