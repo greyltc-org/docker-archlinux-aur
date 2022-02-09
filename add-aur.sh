@@ -88,7 +88,7 @@ then
 else
   sudo -u "${AUR_USER}" -D~ bash -c "yes | ${HELPER} -Scc >/dev/null 2>&1"
 fi
-yes | sudo pacman -Scc >/dev/null 2>&1 || :
+sudo bash -c 'yes | pacman -Scc >/dev/null 2>&1 || :'
 EOF
 chmod +x /bin/aur-install
 
