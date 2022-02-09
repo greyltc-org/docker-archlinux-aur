@@ -72,7 +72,7 @@ then
     if test ! -z \${PKG_OUT+x}
     then
       sudo mkdir -p "\${PKG_OUT}"
-      sudo mv -f /var/cache/makepkg/pkg/* "\${PKG_OUT}" || :
+      sudo mv -f "${_pkgdest}"/* "\${PKG_OUT}" || :
     fi
   else
     sudo -u ${AUR_USER} -D~ bash -c '${HELPER} -S --needed --noprogressbar --noconfirm "\$@"' true "\$@"
