@@ -85,6 +85,8 @@ fi
 if test "${HELPER}" == paru
 then
   _delete="d"
+else
+  _delete=""
 fi
 sudo -u "${AUR_USER}" -D~ bash -c "yes | ${HELPER} -Scc${_delete} >/dev/null 2>&1"
 EOF
