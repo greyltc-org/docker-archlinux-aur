@@ -55,51 +55,47 @@ rm -rf "/var/${AUR_USER}/.cargo"
 # chuck deps
 pacman -Rns --noconfirm $(pacman -Qtdq) || echo "Nothing to remove"
 
-# setup storage for AUR packages built in the future
-sed -i '/PKGDEST=/c\PKGDEST=/var/cache/makepkg/pkg' -i /etc/makepkg.conf
-mkdir -p /var/cache/makepkg
-install -o "${AUR_USER}" -d /var/cache/makepkg/pkg
+# setup storage for AUR packages built
+_pkgdest="/home/custompkgs"
+mkdir -p '$(dirname "${_pkgdest}")'
+install -o "${AUR_USER}" -d "${_pkgdest}"
+sudo -u ${AUR_USER} -D~ bash -c "mkdir -p .config/pacman"
+sudo -u ${AUR_USER} -D~ bash -c "echo PKGDEST=${_pkgdest}>.conf/pacman/makepkg.conf"
+
+tee /bin/aur-install <<EOF
+#!/bin/sh
+if test ! -z "\$@"
+then
+  if test "${HELPER}" == paru
+  then
+    sudo -u ${AUR_USER} -D~ bash -c 'paru -S --removemake --needed --noprogressbar --noconfirm "\$@"; yes' true "\$@"
+    if test ! -z \${PKG_OUT+x}
+    then
+      sudo mkdir -p "\${PKG_OUT}"
+      sudo mv -a /var/cache/makepkg/pkg/* "\${PKG_OUT}"
+    fi
+  else
+    sudo -u ${AUR_USER} -D~ bash -c '${HELPER} -S --needed --noprogressbar --noconfirm "\$@"' true "\$@"
+  fi
+else
+  echo "Nothing to install"
+fi
+
+# cache clean
+if test "${HELPER}" == paru
+then
+  sudo -u "${AUR_USER}" -D~ bash -c "yes | paru -Sc --delete >/dev/null 2>&1; yes | paru -cc >/dev/null 2>&1"
+else
+  sudo -u "${AUR_USER}" -D~ bash -c "yes | ${HELPER} -Scc >/dev/null 2>&1"
+fi
+yes | sudo pacman -Scc >/dev/null 2>&1 || :
+EOF
+chmod +x /bin/aur-install
 
 if [ "${HELPER}" == "yay" ] || [ "${HELPER}" == "paru" ]
 then
-  # do a helper system update just to ensure the helper is working
-  sudo -u "${AUR_USER}" -D~ bash -c "${HELPER} -S --noprogressbar --noconfirm --needed ${HELPER}"
-
-  # cache clean
-  if test "${HELPER}" == paru
-  then
-    sudo -u "${AUR_USER}" -D~ bash -c "yes | paru -Sc --delete; yes | paru -cc"
-  else
-    sudo -u "${AUR_USER}" -D~ bash -c "yes | ${HELPER} -Scc"
-  fi
-  yes | pacman -Scc || echo "Nothing to remove"
+  /bin/aur-install ${HELPER}
 
   echo "Packages from the AUR can now be installed like this:"
   echo "aur-install package-number-one package-number-two" 
 fi
-
-tee /bin/aur-install <<EOF
-#!/bin/sh
-if test "${HELPER}" == paru
-then
-  sudo -u ${AUR_USER} -D~ bash -c 'paru -S --removemake --needed --noprogressbar --noconfirm "\$@"; yes|paru -Sc --delete>/dev/null 2>&1; yes | paru -cc>/dev/null 2>&1' true "\$@"
-else
-  sudo -u ${AUR_USER} -D~ bash -c '${HELPER} -S --needed --noprogressbar --noconfirm "\$@"' true "\$@"
-fi
-yes | pacman -Scc >/dev/null 2>&1
-EOF
-chmod +x /bin/aur-install
-
-# same as aur-install helper above, but with no cleanup of the built package
-tee /bin/aur-install-dirty <<EOF
-#!/bin/sh
-if test "${HELPER}" == paru
-then
-  sudo -u ${AUR_USER} -D~ bash -c 'paru -S  --removemake --needed --noprogressbar --noconfirm "\$@"; yes | paru -cc >/dev/null 2>&1; yes | pacman -Scc>/dev/null 2>&1' true "\$@"
-  yes | paru -cc >/dev/null 2>&1
-else
-  sudo -u ${AUR_USER} -D~ bash -c '${HELPER} -S  --needed --noprogressbar --noconfirm "\$@"' true "\$@"
-fi
-yes | pacman -Scc >/dev/null 2>&1 
-EOF
-chmod +x /bin/aur-install-dirty
