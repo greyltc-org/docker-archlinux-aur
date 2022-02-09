@@ -60,7 +60,7 @@ _pkgdest="/home/custompkgs"
 mkdir -p '$(dirname "${_pkgdest}")'
 install -o "${AUR_USER}" -d "${_pkgdest}"
 sudo -u ${AUR_USER} -D~ bash -c "mkdir -p .config/pacman"
-sudo -u ${AUR_USER} -D~ bash -c "echo PKGDEST=${_pkgdest}>.conf/pacman/makepkg.conf"
+sudo -u ${AUR_USER} -D~ bash -c 'echo "PKGDEST=${_pkgdest}" > .conf/pacman/makepkg.conf'
 
 tee /bin/aur-install <<EOF
 #!/bin/sh
