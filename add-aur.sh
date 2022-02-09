@@ -84,11 +84,9 @@ fi
 # cache clean
 if test "${HELPER}" == paru
 then
-  sudo -u "${AUR_USER}" -D~ bash -c "yes | paru -Sc --delete >/dev/null 2>&1; yes | paru -cc >/dev/null 2>&1"
-else
-  sudo -u "${AUR_USER}" -D~ bash -c "yes | ${HELPER} -Scc >/dev/null 2>&1"
+  _delete="d"
 fi
-sudo yes | pacman -Scc >/dev/null 2>&1 || :
+sudo -u "${AUR_USER}" -D~ bash -c "yes | ${HELPER} -Scc${_delete} >/dev/null 2>&1"
 EOF
 chmod +x /bin/aur-install
 
