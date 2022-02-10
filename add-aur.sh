@@ -82,7 +82,7 @@ else
 fi
 
 # cache clean
-if test "${HELPER}" == paru
+if test "${HELPER}" == "paru"
 then
   _delete="d"
 else
