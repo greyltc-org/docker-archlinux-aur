@@ -19,7 +19,7 @@ mv /tmp/get-new-mirrors /bin/.
 get-new-mirrors
 
 # we're gonna need sudo to use the helper properly
-yes | pacman -S --needed --noprogressbar sudo
+yes | pacman -S --needed --noprogressbar sudo || echo "Nothing to do"
 
 # create the user
 AUR_USER_HOME="/var/${AUR_USER}"
