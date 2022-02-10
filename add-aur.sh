@@ -84,11 +84,11 @@ fi
 # cache clean
 if test "${HELPER}" = paru
 then
-  DELETE="d"
+  DELETE_OPT="d"
 else
-  DELETE=""
+  DELETE_OPT=""
 fi
-sudo -u "${AUR_USER}" -D~ bash -c "yes | ${HELPER} -Scc${DELETE} >/dev/null 2>&1"
+sudo -u "${AUR_USER}" -D~ bash -c "yes | ${HELPER} -Scc\${DELETE_OPT} >/dev/null 2>&1"
 EOF
 chmod +x /bin/aur-install
 
