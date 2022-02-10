@@ -82,6 +82,7 @@ else
 fi
 
 # cache clean
+local _delete
 if test "${HELPER}" == "paru"
 then
   _delete="d"
