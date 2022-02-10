@@ -66,7 +66,7 @@ tee /bin/aur-install <<EOF
 #!/bin/sh
 if test ! -z "\$@"
 then
-  if test "${HELPER}" == paru
+  if test "${HELPER}" = paru
   then
     sudo -u ${AUR_USER} -D~ bash -c 'paru -S --removemake --needed --noprogressbar --noconfirm "\$@"' true "\$@"
     if test ! -z \${PKG_OUT+x}
@@ -82,18 +82,17 @@ else
 fi
 
 # cache clean
-local _delete
-if test "${HELPER}" == "paru"
+if test "${HELPER}" = paru
 then
-  _delete="d"
+  DELETE="d"
 else
-  _delete=""
+  DELETE=""
 fi
-sudo -u "${AUR_USER}" -D~ bash -c "yes | ${HELPER} -Scc${_delete} >/dev/null 2>&1"
+sudo -u "${AUR_USER}" -D~ bash -c "yes | ${HELPER} -Scc${DELETE} >/dev/null 2>&1"
 EOF
 chmod +x /bin/aur-install
 
-if [ "${HELPER}" == "yay" ] || [ "${HELPER}" == "paru" ]
+if test "${HELPER}" = yay || test "${HELPER}" = paru
 then
   /bin/aur-install ${HELPER}
 
