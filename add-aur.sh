@@ -13,17 +13,19 @@ AUR_USER="${1:-ab}"
 HELPER="${2:-yay}"
 
 # update mirrorlist
-curl --silent --location https://raw.githubusercontent.com/greyltc/docker-archlinux/master/get-new-mirrors.sh > /sbin/get-new-mirrors
-chmod +x /sbin/get-new-mirrors
+curl --silent --location https://raw.githubusercontent.com/greyltc/docker-archlinux/master/get-new-mirrors.sh > /tmp/get-new-mirrors
+chmod +x /tmp/get-new-mirrors
+mv /tmp/get-new-mirrors /bin/.
 get-new-mirrors
 
-# we're gonna need sudo to build as the AUR user we're about to set up
-pacman -S sudo --needed --noprogressbar --noconfirm
+# we're gonna need sudo to use the helper properly
+yes | pacman -S --needed --noprogressbar sudo
 
 # create the user
-useradd "${AUR_USER}" --system --shell /usr/bin/nologin --create-home --home-dir "/var/${AUR_USER}"
+AUR_USER_HOME="/var/${AUR_USER}"
+useradd "${AUR_USER}" --system --shell /usr/bin/nologin --create-home --home-dir "${AUR_USER_HOME}"
 
-# lock out the ${AUR_USER}'s password
+# lock out the AUR_USER's password
 passwd --lock "${AUR_USER}"
 
 # give the aur user passwordless sudo powers for pacman
@@ -32,35 +34,37 @@ echo "${AUR_USER} ALL=(ALL) NOPASSWD: /usr/bin/pacman" > "/etc/sudoers.d/allow_$
 # let root cd with sudo
 echo "root ALL=(ALL) CWD=* ALL" > /etc/sudoers.d/permissive_root_Chdir_Spec
 
-# use all possible cores for subsequent package builds
-sed 's,^#MAKEFLAGS=.*,MAKEFLAGS="-j$(nproc)",g' -i /etc/makepkg.conf
+# build config setup
+sudo -u ${AUR_USER} -D~ bash -c 'mkdir -p .config/pacman'
+
+# use all possible cores for builds
+sudo -u ${AUR_USER} -D~ bash -c 'echo MAKEFLAGS="-j\$(nproc)" > .config/pacman/makepkg.conf'
 
 # don't compress the packages built here
-sed "s,^PKGEXT=.*,PKGEXT='.pkg.tar',g" -i /etc/makepkg.conf
-
-# get helper pkgbuild
-sudo -u "${AUR_USER}" -D~ bash -c "curl -s -L https://aur.archlinux.org/cgit/aur.git/snapshot/${HELPER}.tar.gz | bsdtar -xvf -"
-
-# make helper
-sudo -u "${AUR_USER}" -D~//${HELPER} bash -c "makepkg -s --noprogressbar --noconfirm --needed"
-
-# install helper
-pacman -U "/var/${AUR_USER}/${HELPER}"/*.pkg.tar --noprogressbar --noconfirm
-rm -rf "/var/${AUR_USER}/${HELPER}"
-
-# _not_ a fan of a makepkg build leaving garbage in ${HOME}
-rm -rf "/var/${AUR_USER}/.cache/go-build"
-rm -rf "/var/${AUR_USER}/.cargo"
-
-# chuck deps
-pacman -Rns --noconfirm $(pacman -Qtdq) || echo "Nothing to remove"
+#sudo -u ${AUR_USER} -D~ bash -c 'echo PKGEXT=".pkg.tar" >> .config/pacman/makepkg.conf'
 
 # setup storage for AUR packages built
-_pkgdest="/home/custompkgs"
+NEW_PKGDEST="/home/custompkgs"
 mkdir -p "$(dirname \"${_pkgdest}\")"
-install -o "${AUR_USER}" -d "${_pkgdest}"
-sudo -u ${AUR_USER} -D~ bash -c "mkdir -p .config/pacman"
-sudo -u ${AUR_USER} -D~ bash -c "echo \"PKGDEST=${_pkgdest}\" > .config/pacman/makepkg.conf"
+install -o "${AUR_USER}" -d "${NEW_PKGDEST}"
+sudo -u ${AUR_USER} -D~ bash -c "echo \"PKGDEST=${NEW_PKGDEST}\" >> .config/pacman/makepkg.conf"
+
+# get helper pkgbuild
+sudo -u "${AUR_USER}" -D~ bash -c "curl --silent --location https://aur.archlinux.org/cgit/aur.git/snapshot/${HELPER}.tar.gz | bsdtar -xvf -"
+
+# make helper
+sudo -u "${AUR_USER}" -D~//${HELPER} bash -c "yes | makepkg -s --noprogressbar --needed"
+
+# install helper
+yes | pacman -U "${NEW_PKGDEST}"/*.pkg.* --noprogressbar
+
+# cleanup
+rm -rf "${AUR_USER_HOME}/${HELPER}"
+rm -rf "${AUR_USER_HOME}/.cache/go-build"
+rm -rf "${AUR_USER_HOME}/.cargo"
+
+# chuck deps
+yes | pacman -Rns $(pacman -Qtdq) || echo "Nothing to remove"
 
 tee /bin/aur-install <<EOF
 #!/bin/sh
@@ -68,14 +72,14 @@ if test ! -z "\$@"
 then
   if test "${HELPER}" = paru
   then
-    sudo -u ${AUR_USER} -D~ bash -c 'paru -S --removemake --needed --noprogressbar --noconfirm "\$@"' true "\$@"
+    sudo -u ${AUR_USER} -D~ bash -c 'yes | paru -S --removemake --needed --noprogressbar "\$@"' true "\$@"
     if test ! -z \${PKG_OUT+x}
     then
       sudo mkdir -p "\${PKG_OUT}"
-      sudo mv -f "${_pkgdest}"/* "\${PKG_OUT}" || :
+      sudo mv -f "${NEW_PKGDEST}"/* "\${PKG_OUT}" || :
     fi
   else
-    sudo -u ${AUR_USER} -D~ bash -c '${HELPER} -S --needed --noprogressbar --noconfirm "\$@"' true "\$@"
+    sudo -u ${AUR_USER} -D~ bash -c 'yes | ${HELPER} -S --needed --noprogressbar "\$@"' true "\$@"
   fi
 else
   echo "Nothing to install"
