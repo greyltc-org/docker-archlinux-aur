@@ -45,7 +45,7 @@ sudo -u ${AUR_USER} -D~ bash -c 'echo MAKEFLAGS="-j\$(nproc)" > .config/pacman/m
 
 # setup storage for AUR packages built
 NEW_PKGDEST="/home/custompkgs"
-mkdir -p "$(dirname \"${_pkgdest}\")"
+mkdir -p "$(dirname \"${NEW_PKGDEST}\")"
 install -o "${AUR_USER}" -d "${NEW_PKGDEST}"
 sudo -u ${AUR_USER} -D~ bash -c "echo \"PKGDEST=${NEW_PKGDEST}\" >> .config/pacman/makepkg.conf"
 
