@@ -19,7 +19,7 @@ mv /tmp/get-new-mirrors /bin/.
 get-new-mirrors
 
 # we're gonna need sudo to use the helper properly
-yes | pacman -S --needed --noconfirm --noprogressbar sudo || echo "Nothing to do"
+pacman -S --needed --noconfirm --noprogressbar sudo || echo "Nothing to do"
 
 # create the user
 AUR_USER_HOME="/var/${AUR_USER}"
@@ -53,10 +53,10 @@ sudo -u ${AUR_USER} -D~ bash -c "echo \"PKGDEST=${NEW_PKGDEST}\" >> .config/pacm
 sudo -u "${AUR_USER}" -D~ bash -c "curl --silent --location https://aur.archlinux.org/cgit/aur.git/snapshot/${HELPER}.tar.gz | bsdtar -xvf -"
 
 # make helper
-sudo -u "${AUR_USER}" -D~//${HELPER} bash -c "yes | makepkg -s --noprogressbar --needed"
+sudo -u "${AUR_USER}" -D~//${HELPER} bash -c "makepkg -s --noprogressbar --noconfirm --needed"
 
 # install helper
-yes | pacman -U --noconfirm "${NEW_PKGDEST}"/*.pkg.*
+pacman -U --noconfirm "${NEW_PKGDEST}"/*.pkg.*
 
 # cleanup
 rm -rf "${AUR_USER_HOME}/${HELPER}"
@@ -64,7 +64,7 @@ rm -rf "${AUR_USER_HOME}/.cache/go-build"
 rm -rf "${AUR_USER_HOME}/.cargo"
 
 # chuck deps
-yes | pacman -Rns --noconfirm $(pacman -Qtdq) || echo "Nothing to remove"
+pacman -Rns --noconfirm $(pacman -Qtdq) || echo "Nothing to remove"
 
 tee /bin/aur-install <<EOF
 #!/bin/sh
@@ -72,14 +72,14 @@ if test ! -z "\$@"
 then
   if test "${HELPER}" = paru
   then
-    sudo -u ${AUR_USER} -D~ bash -c 'yes | paru -S --removemake --needed --noconfirm --noprogressbar "\$@"' true "\$@"
+    sudo -u ${AUR_USER} -D~ bash -c 'paru -S --removemake --needed --noconfirm --noprogressbar "\$@"' true "\$@"
     if test ! -z \${PKG_OUT+x}
     then
       sudo mkdir -p "\${PKG_OUT}"
       sudo mv -f "${NEW_PKGDEST}"/* "\${PKG_OUT}" || :
     fi
   else
-    sudo -u ${AUR_USER} -D~ bash -c 'yes | ${HELPER} -S --needed --noconfirm --noprogressbar "\$@"' true "\$@"
+    sudo -u ${AUR_USER} -D~ bash -c '${HELPER} -S --needed --noconfirm --noprogressbar "\$@"' true "\$@"
   fi
 else
   echo "Nothing to install"
