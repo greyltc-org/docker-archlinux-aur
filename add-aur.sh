@@ -73,7 +73,7 @@ if test "$#" -ne 1
 then
   if test "${HELPER}" = paru
   then
-    sudo -u ${AUR_USER} -D~ bash -c 'paru --sync --cleanafter --removemake --needed --noconfirm --noprogressbar "\$@"' true "\$@"
+    sudo -u ${AUR_USER} -D~ bash -c 'paru --sync --skipreview --cleanafter --removemake --needed --noconfirm --noprogressbar "\$@"' true "\$@"
     if test ! -z \${PKG_OUT+x}
     then
       sudo mkdir -p "\${PKG_OUT}"
@@ -88,7 +88,7 @@ fi
 if test "${HELPER}" = paru
 then
   DELETE_OPT=" --delete"
-  sudo -u "${AUR_USER}" -D~ bash -c "yes | ${HELPER} --clean >/dev/null 2>&1" || :
+  sudo -u "${AUR_USER}" -D~ bash -c "yes | paru --clean >/dev/null 2>&1" || :
 else
   DELETE_OPT=""
 fi
