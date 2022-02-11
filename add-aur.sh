@@ -77,7 +77,7 @@ then
     if test ! -z \${PKG_OUT+x}
     then
       sudo mkdir -p "\${PKG_OUT}"
-      sudo mv -f "${NEW_PKGDEST}"/* "\${PKG_OUT}" || :
+      sudo find "${NEW_PKGDEST}" -type f -exec mv -fv "{}" "\${PKG_OUT}"/. \;
     fi
   else
     sudo -u ${AUR_USER} -D~ bash -c '${HELPER} -S --needed --noconfirm --noprogressbar "\$@"' true "\$@"
@@ -94,6 +94,7 @@ else
   DELETE_OPT=""
 fi
 sudo -u "${AUR_USER}" -D~ bash -c "yes | ${HELPER} -Scc\${DELETE_OPT} >/dev/null 2>&1"
+sudo rm -rf "${NEW_PKGDEST}"/*
 EOF
 chmod +x /bin/aur-install
 
