@@ -73,25 +73,26 @@ if test "$#" -ne 1
 then
   if test "${HELPER}" = paru
   then
-    sudo -u ${AUR_USER} -D~ bash -c 'paru -S --removemake --needed --noconfirm --noprogressbar "\$@"' true "\$@"
+    sudo -u ${AUR_USER} -D~ bash -c 'paru --sync --cleanafter --removemake --needed --noconfirm --noprogressbar "\$@"' true "\$@"
     if test ! -z \${PKG_OUT+x}
     then
       sudo mkdir -p "\${PKG_OUT}"
       sudo find "${NEW_PKGDEST}" -type f -exec mv -fv "{}" "\${PKG_OUT}"/. \;
     fi
   else
-    sudo -u ${AUR_USER} -D~ bash -c '${HELPER} -S --needed --noconfirm --noprogressbar "\$@"' true "\$@"
+    sudo -u ${AUR_USER} -D~ bash -c '${HELPER} --sync --needed --noconfirm --noprogressbar "\$@"' true "\$@"
   fi
 fi
 
 # cache clean
 if test "${HELPER}" = paru
 then
-  DELETE_OPT="d"
+  DELETE_OPT=" --delete"
+  sudo -u "${AUR_USER}" -D~ bash -c "yes | ${HELPER} --clean >/dev/null 2>&1" || :
 else
   DELETE_OPT=""
 fi
-sudo -u "${AUR_USER}" -D~ bash -c "yes | ${HELPER} -Scc\${DELETE_OPT} >/dev/null 2>&1"
+sudo -u "${AUR_USER}" -D~ bash -c "yes | ${HELPER} --sync -cc\${DELETE_OPT} >/dev/null 2>&1"
 sudo rm -rf "${NEW_PKGDEST}"/*
 EOF
 chmod +x /bin/aur-install
