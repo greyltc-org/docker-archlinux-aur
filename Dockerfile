@@ -10,10 +10,6 @@ ARG AUR_USER
 # can be paru or yay
 ARG HELPER
 
-# optinally set, internal place to copy built packages to
-ARG PKG_OUT
-ENV PKG_OUT=$PKG_OUT
-
 # install helper and add a user for it
 ADD add-aur.sh /root
 RUN bash /root/add-aur.sh "${AUR_USER}" "${HELPER}"
