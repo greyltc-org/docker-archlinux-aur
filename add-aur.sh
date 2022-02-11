@@ -69,7 +69,7 @@ pacman -Rns --noconfirm $(pacman -Qtdq) || echo "Nothing to remove"
 
 tee /bin/aur-install <<EOF
 #!/bin/sh
-if test ! -z "\$@"
+if test "$#" -ne 1
 then
   if test "${HELPER}" = paru
   then
@@ -82,8 +82,6 @@ then
   else
     sudo -u ${AUR_USER} -D~ bash -c '${HELPER} -S --needed --noconfirm --noprogressbar "\$@"' true "\$@"
   fi
-else
-  echo "Nothing to install"
 fi
 
 # cache clean
