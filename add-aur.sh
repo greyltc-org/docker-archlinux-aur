@@ -11,6 +11,7 @@ printenv
 
 AUR_USER="${1:-ab}"
 HELPER="${2:-yay}"
+PKG_OUT="${PKG_OUT:=/mnt/out}"
 
 # update mirrorlist
 curl --silent --location https://raw.githubusercontent.com/greyltc/docker-archlinux/master/get-new-mirrors.sh > /tmp/get-new-mirrors
@@ -74,9 +75,8 @@ then
   if test "${HELPER}" = paru
   then
     sudo -u ${AUR_USER} -D~ bash -c 'paru --sync --skipreview --cleanafter --removemake --needed --noconfirm --noprogressbar "\$@"' true "\$@"
-    if test "\${PKG_OUT}x" != "x"
+    if test -d "\${PKG_OUT}"
     then
-      sudo mkdir -p "\${PKG_OUT}"
       pushd "\${PKG_OUT}"
       sudo find "${NEW_PKGDEST}" -type f -exec mv -fv "{}" . \;
       popd
