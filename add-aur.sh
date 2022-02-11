@@ -77,7 +77,7 @@ then
     if test ! -z \${PKG_OUT+x}
     then
       sudo mkdir -p "\${PKG_OUT}"
-      sudo find "${NEW_PKGDEST}" -type f -exec mv -fv "{}" "\${PKG_OUT}"/. \;
+      sudo find "${NEW_PKGDEST}" -type f -exec mv -fv "{}" "\${PKG_OUT}" \;
     fi
   else
     sudo -u ${AUR_USER} -D~ bash -c '${HELPER} --sync --needed --noconfirm --noprogressbar "\$@"' true "\$@"
