@@ -12,7 +12,7 @@ ARG HELPER
 
 # update mirrorlist
 ADD https://raw.githubusercontent.com/greyltc/docker-archlinux/master/get-new-mirrors.sh /usr/bin/get-new-mirrors
-RUN chmod+x /usr/bin/get-new-mirrors
+RUN chmod +x /usr/bin/get-new-mirrors
 RUN get-new-mirrors
 
 # install helper and add a user for it
