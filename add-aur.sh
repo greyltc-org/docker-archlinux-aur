@@ -81,7 +81,7 @@ then
   else
     sudo -u ${AUR_USER} -D~ bash -c '${HELPER} --sync --needed --noconfirm --noprogressbar "\$@"' true "\$@"
   fi
-  for foreign in $(pacman -Qmq)
+  for foreign in \$(pacman -Qmq)
   do
     sudo find "${NEW_PKGDEST}" -name "\${foreign}*" -exec mv -fv "{}" "${FOREIGN_PKG}" \;
   done
