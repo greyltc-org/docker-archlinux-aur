@@ -83,7 +83,6 @@ then
   fi
   for foreign in $(pacman -Qmq)
   do
-    sudo -u ${AUR_USER} -D~ bash -c 'mkdir ${NEW_PKGDEST}/out'
     sudo find "${NEW_PKGDEST}" -name "\${foreign}*" -exec mv -fv "{}" "${FOREIGN_PKG}" \;
   done
 fi
