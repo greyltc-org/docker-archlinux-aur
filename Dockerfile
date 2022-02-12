@@ -10,6 +10,10 @@ ARG AUR_USER
 # can be paru or yay
 ARG HELPER
 
+# update mirrorlist
+ADD https://raw.githubusercontent.com/greyltc/docker-archlinux/master/get-new-mirrors.sh /tmp/get-new-mirrors
+RUN bash /tmp/get-new-mirrors
+
 # install helper and add a user for it
 ADD add-aur.sh /root
 RUN bash /root/add-aur.sh "${AUR_USER}" "${HELPER}"
