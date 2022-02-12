@@ -54,6 +54,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           platforms: linux/amd64
+          target: build-helper-img
           push: true
           build-args: |
             HELPER=paru
@@ -72,6 +73,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           platforms: linux/amd64
+          target: build-helper-img
           push: true
           build-args: |
             HELPER=yay
