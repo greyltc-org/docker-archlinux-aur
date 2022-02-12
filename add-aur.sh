@@ -60,7 +60,7 @@ sudo -u "${AUR_USER}" -D~ bash -c "curl --silent --location https://aur.archlinu
 sudo -u "${AUR_USER}" -D~//${HELPER} bash -c "makepkg -s --noprogressbar --noconfirm --needed"
 
 # install helper
-pacman --upgrade --noprogressbar --noconfirm "${AUR_USER_HOME}/${HELPER}"/*.pkg.*
+pacman --upgrade --needed --noconfirm --noprogressbar "${NEW_PKGDEST}"/*.pkg.*
 
 # cleanup
 rm -rf "${AUR_USER_HOME}/${HELPER}"
