@@ -6,9 +6,6 @@ set -o nounset
 set -o verbose
 set -o xtrace
 
-# debugging
-printenv
-
 AUR_USER="${1:-ab}"
 HELPER="${2:-yay}"
 
@@ -44,11 +41,17 @@ sudo -u ${AUR_USER} -D~ bash -c 'echo MAKEFLAGS="-j\$(nproc)" > .config/pacman/m
 #sudo -u ${AUR_USER} -D~ bash -c 'echo PKGEXT=".pkg.tar" >> .config/pacman/makepkg.conf'
 
 # setup storage for AUR packages built
-NEW_PKGDEST="/home/custompkgs"
+NEW_PKGDEST="/var/cache/makepkg/pkg"
 NPDP=$(dirname "${NEW_PKGDEST}")
 mkdir -p "${NPDP}"
 install -o "${AUR_USER}" -d "${NEW_PKGDEST}"
 sudo -u ${AUR_USER} -D~ bash -c "echo \"PKGDEST=${NEW_PKGDEST}\" >> .config/pacman/makepkg.conf"
+
+# setup place for foreign packages
+FOREIGN_PKG="/var/cache/foreign-pkg"
+FPP=$(dirname "${FOREIGN_PKG}")
+mkdir -p "${FPP}"
+install -o "${AUR_USER}" -d "${FOREIGN_PKG}"
 
 # get helper pkgbuild
 sudo -u "${AUR_USER}" -D~ bash -c "curl --silent --location https://aur.archlinux.org/cgit/aur.git/snapshot/${HELPER}.tar.gz | bsdtar -xvf -"
@@ -57,7 +60,7 @@ sudo -u "${AUR_USER}" -D~ bash -c "curl --silent --location https://aur.archlinu
 sudo -u "${AUR_USER}" -D~//${HELPER} bash -c "makepkg -s --noprogressbar --noconfirm --needed"
 
 # install helper
-pacman -U --noconfirm "${NEW_PKGDEST}"/*.pkg.*
+pacman -U --noconfirm "${HELPER}"/*.pkg.*
 
 # cleanup
 rm -rf "${AUR_USER_HOME}/${HELPER}"
@@ -73,13 +76,18 @@ if test "$#" -ne 0
 then
   if test "${HELPER}" = paru
   then
-    sudo -u ${AUR_USER} -D~ bash -c 'paru --sync --skipreview --cleanafter --removemake --needed --noconfirm --noprogressbar "\$@"' true "\$@"
+    sudo -u ${AUR_USER} -D~ bash -c 'paru --sync --skipreview --removemake --needed --noconfirm --noprogressbar "\$@"' true "\$@"
   else
     sudo -u ${AUR_USER} -D~ bash -c '${HELPER} --sync --needed --noconfirm --noprogressbar "\$@"' true "\$@"
   fi
+  for foreign in $(pacman -Qmq)
+  do
+    sudo -u ${AUR_USER} -D~ bash -c 'mkdir ${NEW_PKGDEST}/out'
+    sudo find "${NEW_PKGDEST}" -name "\${foreign}*" -exec mv -fv "{}" "${FOREIGN_PKG}" \;
+  done
 fi
 
-# cache clean
+# clean
 if test "${HELPER}" = paru
 then
   DELETE_OPT=" --delete"
@@ -88,7 +96,7 @@ else
   DELETE_OPT=""
 fi
 sudo -u "${AUR_USER}" -D~ bash -c "yes | ${HELPER} --sync -cc\${DELETE_OPT} >/dev/null 2>&1"
-#sudo rm -rf "${NEW_PKGDEST}"/*
+sudo rm -rf "${NEW_PKGDEST}"/*
 EOF
 chmod +x /bin/aur-install
 
