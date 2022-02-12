@@ -63,6 +63,7 @@ sudo -u "${AUR_USER}" -D~//${HELPER} bash -c "makepkg -s --noprogressbar --nocon
 pacman --upgrade --needed --noconfirm --noprogressbar "${NEW_PKGDEST}"/*.pkg.*
 
 # cleanup
+sudo rm -rf "${NEW_PKGDEST}"/*
 rm -rf "${AUR_USER_HOME}/${HELPER}"
 rm -rf "${AUR_USER_HOME}/.cache/go-build"
 rm -rf "${AUR_USER_HOME}/.cargo"
