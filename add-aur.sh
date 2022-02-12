@@ -10,13 +10,13 @@ AUR_USER="${1:-ab}"
 HELPER="${2:-yay}"
 
 # update mirrorlist
-curl --silent --location https://raw.githubusercontent.com/greyltc/docker-archlinux/master/get-new-mirrors.sh > /tmp/get-new-mirrors
-chmod +x /tmp/get-new-mirrors
-mv /tmp/get-new-mirrors /bin/.
-get-new-mirrors
+#curl --silent --location https://raw.githubusercontent.com/greyltc/docker-archlinux/master/get-new-mirrors.sh > /tmp/get-new-mirrors
+#chmod +x /tmp/get-new-mirrors
+#mv /tmp/get-new-mirrors /bin/.
+#get-new-mirrors
 
 # we're gonna need sudo to use the helper properly
-pacman -S --needed --noconfirm --noprogressbar sudo || echo "Nothing to do"
+pacman --sync --needed --noconfirm --noprogressbar sudo || echo "Nothing to do"
 
 # create the user
 AUR_USER_HOME="/var/${AUR_USER}"
