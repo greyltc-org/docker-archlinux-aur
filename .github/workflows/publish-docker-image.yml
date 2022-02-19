@@ -56,6 +56,7 @@ jobs:
           platforms: linux/amd64
           target: build-helper-img
           push: true
+          context: .
           build-args: |
             HELPER=paru
             AUR_USER=ab
@@ -75,6 +76,7 @@ jobs:
           platforms: linux/amd64
           target: build-helper-img
           push: true
+          context: .
           build-args: |
             HELPER=yay
             AUR_USER=ab
