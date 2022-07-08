@@ -73,7 +73,7 @@ pacman -Rns --noconfirm $(pacman -Qtdq) || echo "Nothing to remove"
 
 tee /bin/aur-install <<EOF
 #!/bin/sh
-if test "$#" -ne 0
+if test "\$#" -ne 0
 then
   if test "${HELPER}" = paru
   then
